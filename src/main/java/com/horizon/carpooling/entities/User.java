@@ -1,6 +1,11 @@
 package com.horizon.carpooling.entities;
 
+import com.horizon.carpooling.entities.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,23 +22,44 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "_user")
+@Table(name = "user")
 public class User implements UserDetails {
-    @Id @GeneratedValue
-    private Integer idUser;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @NotBlank()
     private String firstname;
+    @NotBlank()
     private String lastname;
+    @Column(unique = true)
+    @NotBlank()
+    @Max(9999999999L)
+    @Positive()
     private long CIN;
+    @Column(unique = true)
+
     private long phoneNumber;
+    @Column(nullable = false)
     private String password;
+    @Column(unique = true,nullable = false)
+    @Email
     private String email;
     @Enumerated(EnumType.STRING)
+    @NotBlank()
     private Role role;
+    @OneToMany(mappedBy = "driver")
+    private List<Ride> rides ;
 
+    @OneToMany(mappedBy = "passenger")
+    private List<RideRequest> myRideRequests;
+
+    @OneToMany(mappedBy = "reviewer")
+    private List<Review> myReviews;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
+
 
     @Override
     public String getUsername() {
