@@ -1,5 +1,6 @@
 package com.horizon.carpooling.entities;
 
+import com.horizon.carpooling.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,23 +18,36 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "_user")
+@Table(name = "user")
 public class User implements UserDetails {
-    @Id @GeneratedValue
-    private Integer idUser;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String firstname;
     private String lastname;
+    @Column(unique = true)
     private long CIN;
+    @Column(unique = true)
     private long phoneNumber;
+    @Column(nullable = false)
     private String password;
+    @Column(unique = true,nullable = false)
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(mappedBy = "driver")
+    private List<Ride> rides ;
 
+    @OneToMany(mappedBy = "passenger")
+    private List<RideRequest> myRideRequests;
+
+    @OneToMany(mappedBy = "reviewer")
+    private List<Review> myReviews;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
+
 
     @Override
     public String getUsername() {

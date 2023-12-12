@@ -5,7 +5,7 @@ import com.horizon.carpooling.auth.AuthenticationResponse;
 import com.horizon.carpooling.auth.RegisterRequest;
 import com.horizon.carpooling.config.JwtService;
 import com.horizon.carpooling.dao.UserRepository;
-import com.horizon.carpooling.entities.Role;
+import com.horizon.carpooling.entities.enums.Role;
 import com.horizon.carpooling.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
