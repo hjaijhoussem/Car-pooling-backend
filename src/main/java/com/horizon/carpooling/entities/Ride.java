@@ -64,8 +64,10 @@ public class Ride {
 
 
     @Column(nullable = false)
+    @NotBlank()
     private String departureCity;
     @Column(nullable = false)
+    @NotBlank()
     private String destinationCity;
     @OneToMany(mappedBy = "ride")
     private List<RideRequest> rideRequests ;

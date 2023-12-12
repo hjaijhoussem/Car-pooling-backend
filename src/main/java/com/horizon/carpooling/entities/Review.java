@@ -2,6 +2,7 @@ package com.horizon.carpooling.entities;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Review {
@@ -10,9 +11,11 @@ public class Review {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank()
     private float Stars;
 
     @Column(nullable = false)
+    @NotBlank()
     private String comment;
 
 
