@@ -1,5 +1,6 @@
 package com.horizon.carpooling.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.horizon.carpooling.entities.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -38,6 +39,7 @@ public class User implements UserDetails {
     private long CIN;
     @Column(unique = true)
     private long phoneNumber;
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
     @Column(unique = true,nullable = false)
@@ -54,6 +56,8 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "reviewer")
     private List<Review> myReviews;
+    private boolean isActive;
+    private boolean isRider;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
