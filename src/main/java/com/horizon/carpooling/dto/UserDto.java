@@ -18,7 +18,7 @@ public class UserDto {
     private long phoneNumber;
     private String email;
     private List<RideDto> rides ;
-    private List<RideRequest> myRideRequests;
+    private List<RideRequestDto> myRideRequests;
     private List<ReviewDto> myReviews;
     private boolean isActive;
     private boolean isRider;
