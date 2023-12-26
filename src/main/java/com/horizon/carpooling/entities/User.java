@@ -37,7 +37,6 @@ public class User implements UserDetails {
     @Positive()
     private long CIN;
     @Column(unique = true)
-
     private long phoneNumber;
     @Column(nullable = false)
     private String password;
