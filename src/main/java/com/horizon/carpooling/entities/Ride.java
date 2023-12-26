@@ -47,8 +47,8 @@ public class Ride {
     @NotBlank()
     private LocalTime departureTime;
 
-    @ManyToOne()
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "driver_id")
     private User driver ;
 
 

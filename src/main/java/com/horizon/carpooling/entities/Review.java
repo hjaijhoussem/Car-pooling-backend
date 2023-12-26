@@ -25,12 +25,12 @@ public class Review {
     private String comment;
 
 
-    @ManyToOne()
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "reviewer_id")
     private User reviewer;
 
-    @ManyToOne()
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "ride_id")
     private Ride ride;
 
 

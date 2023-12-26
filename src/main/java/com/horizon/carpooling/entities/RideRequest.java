@@ -19,8 +19,8 @@ public class RideRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne()
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "passenger_id")
     private User passenger;
     @Column(nullable = false)
     @NotBlank()
@@ -32,7 +32,7 @@ public class RideRequest {
     @Column()
     private boolean isAccepted;
 
-    @ManyToOne()
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "ride_id")
     private Ride ride  ;
 }
