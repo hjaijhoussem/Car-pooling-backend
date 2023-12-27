@@ -15,6 +15,7 @@ public class AdminService {
     private final UserRepository userDao;
     private final ModelMapper mapper;
 
+
     public List<UserDto> getUserList() {
         return userDao.findAll().stream()
                 .map(user -> mapper.map(user, UserDto.class))

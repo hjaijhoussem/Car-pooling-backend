@@ -3,10 +3,7 @@ package com.horizon.carpooling.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.horizon.carpooling.entities.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +30,7 @@ public class User implements UserDetails {
     @NotBlank()
     private String lastname;
     @Column(unique = true)
-    @NotBlank()
+    @NotNull()
     @Max(9999999999L)
     @Positive()
     private long CIN;
@@ -46,7 +43,7 @@ public class User implements UserDetails {
     @Email
     private String email;
     @Enumerated(EnumType.STRING)
-    @NotBlank()
+    @NotNull(message = "Role cannot be null")
     private Role role;
     @OneToMany(mappedBy = "driver")
     private List<Ride> rides ;
