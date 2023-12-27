@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     private final AdminService adminService;
     @GetMapping("/users")
@@ -23,6 +22,7 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getUserList());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/hello")
     public ResponseEntity<String> sayHello(){return  ResponseEntity.ok("Admin say hello");}
 
