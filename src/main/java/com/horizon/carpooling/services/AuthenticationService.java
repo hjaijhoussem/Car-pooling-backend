@@ -30,6 +30,7 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .CIN(request.getCIN())
                 .phoneNumber(request.getPhoneNumber())
+                .isActive(true)
                 .build();
         userRepository.save(user);
         var jwtToken =  jwtService.generateToken(user);

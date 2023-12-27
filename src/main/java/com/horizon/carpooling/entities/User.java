@@ -54,7 +54,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "reviewer")
     private List<Review> myReviews;
     private boolean isActive;
-    private boolean isRider;
+    private boolean isDriver;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
