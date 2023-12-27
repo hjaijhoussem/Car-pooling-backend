@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private String lastname;
     @Column(unique = true)
     @NotNull()
-    @Max(9999999999L)
+    @Max(99999999L)
     @Positive()
     private long CIN;
     @Column(unique = true)
