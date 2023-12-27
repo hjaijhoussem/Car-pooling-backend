@@ -2,7 +2,9 @@ package com.horizon.carpooling.services;
 
 import com.horizon.carpooling.dao.UserRepository;
 import com.horizon.carpooling.dto.UserDto;
+import com.horizon.carpooling.entities.User;
 import com.horizon.carpooling.entities.enums.Role;
+import com.horizon.carpooling.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,4 +26,17 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
+    public UserDto disactivate(Integer userId) {
+        User user = userDao.findById(userId).orElseThrow(UserNotFoundException::new);
+        user.setActive(false);
+        User updatedUser = userDao.save(user);
+        return mapper.map(updatedUser, UserDto.class);
+    }
+
+    public UserDto activate(Integer userId) {
+        User user = userDao.findById(userId).orElseThrow(UserNotFoundException::new);
+        user.setActive(true);
+        User updatedUser = userDao.save(user);
+        return mapper.map(updatedUser, UserDto.class);
+    }
 }
