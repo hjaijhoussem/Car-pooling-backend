@@ -3,6 +3,7 @@ package com.horizon.carpooling.controllers;
 import com.horizon.carpooling.auth.AuthenticationRequest;
 import com.horizon.carpooling.auth.AuthenticationResponse;
 import com.horizon.carpooling.auth.RegisterRequest;
+import com.horizon.carpooling.exception.IncorrectPasswordException;
 import com.horizon.carpooling.services.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class AuthenticationController {
     }
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticateRequest(
-            @RequestBody AuthenticationRequest request
-    ){
+            @RequestBody @Valid AuthenticationRequest request
+    ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 }
