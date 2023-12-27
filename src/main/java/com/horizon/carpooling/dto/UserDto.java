@@ -14,6 +14,7 @@ public class UserDto {
     private Integer id;
     private String firstname;
     private String lastname;
+    private String role;
     private long CIN;
     private long phoneNumber;
     private String email;
