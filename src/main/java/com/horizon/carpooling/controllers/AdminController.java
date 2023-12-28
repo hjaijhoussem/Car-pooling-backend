@@ -26,7 +26,7 @@ public class AdminController {
     }
 
     @PutMapping("/users/{userId}/activate")
-    public ResponseEntity<UserDetailDto> activateUserAccount(@PathVariable("userId") Integer userId) {
+    public ResponseEntity<UserDetailDto> activateUserAccount(@PathVariable("userId") Integer userId){
         return ResponseEntity.ok(adminService.activate(userId));
     }
 

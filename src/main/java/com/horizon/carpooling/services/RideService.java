@@ -59,6 +59,15 @@ public class RideService {
         return this.mapper.map(ride,RideDetailDto.class);
     }
 
+    public List<RideListDto> getDriverRides(int id){
+        //get driver
+        User driver = this.userDao.findById(id).orElseThrow(UserNotFoundException::new);
+        if(!driver.isDriver())
+            throw new RuntimeException("This user is not a driver");
+        List<Ride> rides = this.rideDao.findByDriver(driver);
+        return rides.stream().map(ride -> this.mapper.map(ride,RideListDto.class)).toList();
+    }
+
     public RideDetailDto getRideDetail(Long id){
         Optional<Ride> ride = this.rideDao.findById(id);
         if(ride.isPresent()){

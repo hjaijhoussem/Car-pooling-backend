@@ -44,8 +44,8 @@ public class RideController {
     }
 
     @GetMapping("/rides/driver/{id}")
-    public ResponseEntity<List<RideListDto>> getDriverRides(@PathVariable Long id) {
-        return new ResponseEntity<>(this.rideService.getDriverRides(), HttpStatus.OK);
+    public ResponseEntity<List<RideListDto>> getDriverRides(@PathVariable int id) {
+        return new ResponseEntity<>(this.rideService.getDriverRides(id), HttpStatus.OK);
     }
 
 
