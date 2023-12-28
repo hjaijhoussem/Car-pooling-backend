@@ -2,6 +2,7 @@ package com.horizon.carpooling.controllers.user;
 
 import com.horizon.carpooling.dto.ride.RideCreateDto;
 import com.horizon.carpooling.dto.ride.RideDetailDto;
+import com.horizon.carpooling.dto.ride.RideListDto;
 import com.horizon.carpooling.dto.ride.RideUpdateDto;
 import com.horizon.carpooling.services.RideService;
 import jakarta.validation.Valid;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -32,6 +35,17 @@ public class RideController {
     @GetMapping("/rides/{id}")
     public ResponseEntity<RideDetailDto> getRideDetail(@PathVariable Long id) {
         return new ResponseEntity<>(this.rideService.getRideDetail(id), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/rides")
+    public ResponseEntity<List<RideListDto>> getRides() {
+        return new ResponseEntity<>(this.rideService.getRides(), HttpStatus.OK);
+    }
+
+    @GetMapping("/rides/driver/{id}")
+    public ResponseEntity<List<RideListDto>> getDriverRides(@PathVariable Long id) {
+        return new ResponseEntity<>(this.rideService.getDriverRides(), HttpStatus.OK);
     }
 
 

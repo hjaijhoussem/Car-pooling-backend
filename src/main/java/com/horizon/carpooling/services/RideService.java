@@ -4,6 +4,7 @@ import com.horizon.carpooling.dao.RideRepository;
 import com.horizon.carpooling.dao.UserRepository;
 import com.horizon.carpooling.dto.ride.RideCreateDto;
 import com.horizon.carpooling.dto.ride.RideDetailDto;
+import com.horizon.carpooling.dto.ride.RideListDto;
 import com.horizon.carpooling.dto.ride.RideUpdateDto;
 import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.User;
@@ -16,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -66,6 +68,13 @@ public class RideService {
             throw new RuntimeException("Ride not found");
         }
     }
+
+    public List<RideListDto> getRides(){
+        // find all rides
+        List<Ride> rides = this.rideDao.findAll();
+        return rides.stream().map(ride -> this.mapper.map(ride,RideListDto.class)).toList();
+    }
+
 
 
     public User getUser(){

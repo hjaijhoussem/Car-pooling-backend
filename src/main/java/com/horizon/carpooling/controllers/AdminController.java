@@ -29,4 +29,6 @@ public class AdminController {
     public ResponseEntity<UserDetailDto> activateUserAccount(@PathVariable("userId") Integer userId) {
         return ResponseEntity.ok(adminService.activate(userId));
     }
+
+
 }
