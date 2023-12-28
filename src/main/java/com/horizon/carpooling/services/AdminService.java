@@ -1,7 +1,7 @@
 package com.horizon.carpooling.services;
 
 import com.horizon.carpooling.dao.UserRepository;
-import com.horizon.carpooling.dto.UserDto;
+import com.horizon.carpooling.dto.user.UserDetailDto;
 import com.horizon.carpooling.entities.User;
 import com.horizon.carpooling.entities.enums.Role;
 import com.horizon.carpooling.exception.UserNotFoundException;
@@ -19,24 +19,24 @@ public class AdminService {
     private final ModelMapper mapper;
 
 
-    public List<UserDto> getUserList() {
+    public List<UserDetailDto> getUserList() {
         return userDao.findAll().stream()
                 .filter(user -> !user.getRole().equals(Role.ADMIN)) // Assuming Role.ADMIN is an enum value
-                .map(user -> mapper.map(user, UserDto.class))
+                .map(user -> mapper.map(user, UserDetailDto.class))
                 .collect(Collectors.toList());
     }
 
-    public UserDto disactivate(Integer userId) {
+    public UserDetailDto disactivate(Integer userId) {
         User user = userDao.findById(userId).orElseThrow(UserNotFoundException::new);
         user.setActive(false);
         User updatedUser = userDao.save(user);
-        return mapper.map(updatedUser, UserDto.class);
+        return mapper.map(updatedUser, UserDetailDto.class);
     }
 
-    public UserDto activate(Integer userId) {
+    public UserDetailDto activate(Integer userId) {
         User user = userDao.findById(userId).orElseThrow(UserNotFoundException::new);
         user.setActive(true);
         User updatedUser = userDao.save(user);
-        return mapper.map(updatedUser, UserDto.class);
+        return mapper.map(updatedUser, UserDetailDto.class);
     }
 }

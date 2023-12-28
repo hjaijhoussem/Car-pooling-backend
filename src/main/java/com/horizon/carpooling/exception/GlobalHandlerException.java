@@ -24,9 +24,16 @@ public class GlobalHandlerException {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
+
     @ExceptionHandler(value = IncorrectPasswordException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ErrorResponse handlerException(IncorrectPasswordException ex){
+    public @ResponseBody ErrorResponse handlerException(IncorrectPasswordException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+    @ExceptionHandler(value = RuntimeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorResponse handlerException(RuntimeException ex){
+
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
