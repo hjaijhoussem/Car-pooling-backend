@@ -1,6 +1,8 @@
-package com.horizon.carpooling.dto;
+package com.horizon.carpooling.dto.user;
 
-import com.horizon.carpooling.entities.RideRequest;
+import com.horizon.carpooling.dto.request.RideRequestDetailDto;
+import com.horizon.carpooling.dto.review.ReviewDetailDto;
+import com.horizon.carpooling.dto.ride.RideDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserDetailDto {
     private Integer id;
     private String firstname;
     private String lastname;
@@ -18,9 +20,9 @@ public class UserDto {
     private long CIN;
     private long phoneNumber;
     private String email;
-    private List<RideDto> rides ;
-    private List<RideRequestDto> myRideRequests;
-    private List<ReviewDto> myReviews;
+    private List<RideDetailDto> rides ;
+    private List<RideRequestDetailDto> myRideRequests;
+    private List<ReviewDetailDto> myReviews;
     private boolean isActive;
     private boolean isRider;
 }
