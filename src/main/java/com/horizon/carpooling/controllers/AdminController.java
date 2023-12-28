@@ -1,6 +1,6 @@
 package com.horizon.carpooling.controllers;
 
-import com.horizon.carpooling.dto.UserDto;
+import com.horizon.carpooling.dto.user.UserDetailDto;
 import com.horizon.carpooling.services.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +16,17 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getUsersList(){
+    public ResponseEntity<List<UserDetailDto>> getUsersList(){
         return ResponseEntity.ok(adminService.getUserList());
     }
 
     @PutMapping("/users/{userId}/dis-activate")
-    public ResponseEntity<UserDto> disactivateUserAccount( @PathVariable("userId") Integer userId){
+    public ResponseEntity<UserDetailDto> disactivateUserAccount(@PathVariable("userId") Integer userId){
         return ResponseEntity.ok(adminService.disactivate(userId));
     }
 
     @PutMapping("/users/{userId}/activate")
-    public ResponseEntity<UserDto> activateUserAccount( @PathVariable("userId") Integer userId){
+    public ResponseEntity<UserDetailDto> activateUserAccount(@PathVariable("userId") Integer userId){
         return ResponseEntity.ok(adminService.activate(userId));
     }
 

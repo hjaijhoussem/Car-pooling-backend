@@ -1,5 +1,8 @@
-package com.horizon.carpooling.dto;
+package com.horizon.carpooling.dto.ride;
 
+import com.horizon.carpooling.dto.request.RideRequestDetailDto;
+import com.horizon.carpooling.dto.review.ReviewListDto;
+import com.horizon.carpooling.dto.user.UserListDto;
 import com.horizon.carpooling.entities.enums.Region;
 import com.horizon.carpooling.entities.enums.RideStatus;
 import lombok.AllArgsConstructor;
@@ -13,7 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RideDto {
+public class RideDetailDto {
     private Long id;
     private int availableSeats;
     private float pricePerSeat;
@@ -22,11 +25,11 @@ public class RideDto {
     private RideStatus status;
     private Date departureDate;
     private LocalTime departureTime;
-    private UserDto driver ;
+    private UserListDto driver ;
     private Region departureRegion;
     private Region destinationRegion;
     private String departureCity;
     private String destinationCity;
-    private List<RideRequestDto> rideRequests ;
-    private List<ReviewDto> reviews;
+    private List<RideRequestDetailDto> rideRequests ;
+    private List<ReviewListDto> reviews;
 }
