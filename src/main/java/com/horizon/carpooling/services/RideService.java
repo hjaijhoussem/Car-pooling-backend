@@ -29,12 +29,25 @@ public class RideService {
     public RideDetailDto create(RideCreateDto rideCreateDto){
       Ride ride =   this.mapper.map(rideCreateDto,Ride.class);
       User driver = this.getUser();
+        if(!driver.isDriver())
+            throw new RuntimeException("You are not a driver");
         ride.setDriver(driver);
         ride.setCreatedAt(new Date( System.currentTimeMillis()));
         ride.setStatus(RideStatus.PENDING);
         this.rideDao.saveAndFlush(ride);
         return this.mapper.map(ride,RideDetailDto.class);
     }
+
+    public RideDetailDto getRideDetail(Long id){
+        Optional<Ride> ride = this.rideDao.findById(id);
+        if(ride.isPresent()){
+            return this.mapper.map(ride.get(),RideDetailDto.class);
+        }
+        else {
+            throw new RuntimeException("Ride not found");
+        }
+    }
+
 
     public User getUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
