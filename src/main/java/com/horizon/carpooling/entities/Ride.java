@@ -4,10 +4,7 @@ package com.horizon.carpooling.entities;
 import com.horizon.carpooling.entities.enums.Region;
 import com.horizon.carpooling.entities.enums.RideStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,12 +22,12 @@ public class Ride {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    @NotBlank()
+    @NotNull()
     @Min(1)
-    @Max(1)
+    @Max(8)
     private int availableSeats;
     @Column(nullable = false)
-    @NotBlank
+    @NotNull
     private float pricePerSeat;
     @Column(nullable = false)
     private Date createdAt;
