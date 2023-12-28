@@ -1,14 +1,15 @@
 package com.horizon.carpooling.dto.ride;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.horizon.carpooling.entities.enums.Region;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
+
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
 import java.util.Date;
 
 @Data
@@ -16,21 +17,21 @@ import java.util.Date;
 @NoArgsConstructor
 public class RideCreateDto {
   
-    @NotBlank
-    @Max(8L)
+    @Positive
+    @Max(8)
     private int availableSeats;
-    @NotBlank
+    @Positive(message = "Price per seat must be positive")
+    @NotNull(message = "Price per seat must not be null")
     private float pricePerSeat;
-    @Future
+    @Future(message = "Departure date must be in the future")
+    @NotNull(message = "Departure date must not be null")
     private Date departureDate;
-    @NotBlank
-    private LocalTime departureTime;
-    @NotBlank
+    @NotNull(message = "Departure region must not be null")
     private Region departureRegion;
-    @NotBlank
+    @NotNull(message = "Destination region must not be null")
     private Region destinationRegion;
-    @NotBlank
+    @NotBlank(message = "Departure city must not be blank")
     private String departureCity;
-    @NotBlank
+    @NotBlank(message = "Destination city must not be blank")
     private String destinationCity;
 }

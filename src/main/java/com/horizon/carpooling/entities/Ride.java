@@ -25,12 +25,9 @@ public class Ride {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    @NotBlank()
-    @Min(1)
-    @Max(1)
+
     private int availableSeats;
     @Column(nullable = false)
-    @NotBlank
     private float pricePerSeat;
     @Column(nullable = false)
     private Date createdAt;
@@ -40,12 +37,7 @@ public class Ride {
     @Column(nullable = false)
     private RideStatus status;
     @Column(nullable = false)
-    @NotBlank()
-    @Future()
     private Date departureDate;
-    @Column(nullable = false)
-    @NotBlank()
-    private LocalTime departureTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "driver_id")
@@ -56,7 +48,6 @@ public class Ride {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotBlank()
     private Region departureRegion;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -64,10 +55,8 @@ public class Ride {
 
 
     @Column(nullable = false)
-    @NotBlank()
     private String departureCity;
     @Column(nullable = false)
-    @NotBlank()
     private String destinationCity;
     @OneToMany(mappedBy = "ride")
     private List<RideRequest> rideRequests ;

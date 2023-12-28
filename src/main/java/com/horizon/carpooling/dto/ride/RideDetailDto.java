@@ -24,7 +24,6 @@ public class RideDetailDto {
     private Date updatedAt ;
     private RideStatus status;
     private Date departureDate;
-    private LocalTime departureTime;
     private UserListDto driver ;
     private Region departureRegion;
     private Region destinationRegion;
