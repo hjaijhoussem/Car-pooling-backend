@@ -4,6 +4,7 @@ import com.horizon.carpooling.dao.RideRepository;
 import com.horizon.carpooling.dao.UserRepository;
 import com.horizon.carpooling.dto.ride.RideCreateDto;
 import com.horizon.carpooling.dto.ride.RideDetailDto;
+import com.horizon.carpooling.dto.ride.RideUpdateDto;
 import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.User;
 import com.horizon.carpooling.entities.enums.RideStatus;
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -33,6 +35,23 @@ public class RideService {
             throw new RuntimeException("You are not a driver");
         ride.setDriver(driver);
         ride.setCreatedAt(new Date( System.currentTimeMillis()));
+        ride.setStatus(RideStatus.PENDING);
+        this.rideDao.saveAndFlush(ride);
+        return this.mapper.map(ride,RideDetailDto.class);
+    }
+
+    public RideDetailDto update(RideUpdateDto rideUpdateDto,Long id){
+        Ride ride = this.rideDao.findById(id).orElseThrow(RuntimeException::new);
+        if(ride.getStatus() != RideStatus.PENDING)
+            throw new RuntimeException("You can't update this ride");
+        User driver = this.getUser();
+        if(!Objects.equals(driver.getId(), ride.getDriver().getId()))
+            throw new RuntimeException("You are not the driver of this ride");
+        if(!driver.isDriver())
+            throw new RuntimeException("You are not a driver");
+        this.mapper.map(rideUpdateDto,ride);
+        ride.setDriver(driver);
+        ride.setUpdatedAt(new Date( System.currentTimeMillis()));
         ride.setStatus(RideStatus.PENDING);
         this.rideDao.saveAndFlush(ride);
         return this.mapper.map(ride,RideDetailDto.class);

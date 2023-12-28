@@ -2,6 +2,7 @@ package com.horizon.carpooling.controllers.user;
 
 import com.horizon.carpooling.dto.ride.RideCreateDto;
 import com.horizon.carpooling.dto.ride.RideDetailDto;
+import com.horizon.carpooling.dto.ride.RideUpdateDto;
 import com.horizon.carpooling.services.RideService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,18 @@ public class RideController {
         return new ResponseEntity<>(this.rideService.create(rideDto), HttpStatus.CREATED);
     }
 
+    @PutMapping("/rides/{id}")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<RideDetailDto> update(@RequestBody @Valid RideUpdateDto rideDto, @PathVariable Long id) {
+        return new ResponseEntity<>(this.rideService.update(rideDto,id), HttpStatus.CREATED);
+    }
+
     @GetMapping("/rides/{id}")
     public ResponseEntity<RideDetailDto> getRideDetail(@PathVariable Long id) {
         return new ResponseEntity<>(this.rideService.getRideDetail(id), HttpStatus.OK);
     }
+
+
 }
 
 
