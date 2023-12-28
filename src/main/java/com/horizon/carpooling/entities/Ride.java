@@ -22,18 +22,9 @@ public class Ride {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-<<<<<<< HEAD
-    @NotNull()
-    @Min(1)
-    @Max(8)
     private int availableSeats;
     @Column(nullable = false)
-    @NotNull
-=======
 
-    private int availableSeats;
-    @Column(nullable = false)
->>>>>>> feature/user
     private float pricePerSeat;
     @Column(nullable = false)
     private Date createdAt;
