@@ -1,19 +1,14 @@
 package com.horizon.carpooling.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.horizon.carpooling.entities.enums.Region;
 import com.horizon.carpooling.entities.enums.RideStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -57,10 +52,6 @@ public class Ride {
     private String departureCity;
     @Column(nullable = false)
     private String destinationCity;
-    @OneToMany(mappedBy = "ride")
-    private List<RideRequest> rideRequests ;
 
-    @OneToMany(mappedBy = "ride")
-    private List<Review> reviews;
 
 }

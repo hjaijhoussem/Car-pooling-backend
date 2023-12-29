@@ -22,9 +22,6 @@ public class UserDetailDto {
     private long CIN;
     private long phoneNumber;
     private String email;
-    private List<RideListDto> rides ;
-    private List<RideListDto> myRideRequests;
-    private List<ReviewListDto> myReviews;
     private boolean isActive;
     private boolean isRider;
 }

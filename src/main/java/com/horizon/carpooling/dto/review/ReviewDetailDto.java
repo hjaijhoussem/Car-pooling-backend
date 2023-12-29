@@ -14,6 +14,5 @@ public class ReviewDetailDto {
     private Long id;
     private float Stars;
     private String comment;
-    private UserListDto reviewer;
     private RideDetailDto ride;
 }

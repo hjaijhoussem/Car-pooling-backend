@@ -19,5 +19,6 @@ public class RideRequestDetailDto {
     private int requestedSeats;
     private Date createdAt;
     private RideRequestStatus status;
-    private RideListDto ride  ;
+    private RideDetailDto ride;
+
 }

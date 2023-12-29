@@ -29,6 +29,6 @@ public class RideDetailDto {
     private Region destinationRegion;
     private String departureCity;
     private String destinationCity;
-    private List<RideRequestDetailDto> rideRequests ;
-    private List<ReviewListDto> reviews;
+
+
 }

@@ -1,7 +1,6 @@
 package com.horizon.carpooling.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.horizon.carpooling.entities.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -46,14 +45,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Role cannot be null")
     private Role role;
-    @OneToMany(mappedBy = "driver")
-    private List<Ride> rides ;
 
-    @OneToMany(mappedBy = "passenger")
-    private List<RideRequest> myRideRequests;
-
-    @OneToMany(mappedBy = "reviewer")
-    private List<Review> myReviews;
     private boolean isActive;
     private boolean isDriver;
     @Override

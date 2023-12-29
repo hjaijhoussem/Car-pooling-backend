@@ -1,12 +1,10 @@
 package com.horizon.carpooling.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.horizon.carpooling.entities.enums.RideRequestStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Cleanup;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-
+@Builder
 public class RideRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

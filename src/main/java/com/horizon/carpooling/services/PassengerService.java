@@ -3,7 +3,6 @@ package com.horizon.carpooling.services;
 import com.horizon.carpooling.dao.RideRepository;
 import com.horizon.carpooling.dao.RideRequestRepository;
 import com.horizon.carpooling.dao.UserRepository;
-import com.horizon.carpooling.dto.request.RequestListDto;
 import com.horizon.carpooling.dto.request.RideRequestDetailDto;
 import com.horizon.carpooling.dto.request.RideRequestDto;
 import com.horizon.carpooling.entities.Ride;
@@ -11,12 +10,14 @@ import com.horizon.carpooling.entities.RideRequest;
 import com.horizon.carpooling.entities.User;
 import com.horizon.carpooling.entities.enums.RideRequestStatus;
 import com.horizon.carpooling.exception.*;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,26 +36,23 @@ public class PassengerService {
         Ride ride = rideDao.findById(rideId).orElseThrow(RideNotFoundException::new);
         // check available seats in ride
         if(ride.getAvailableSeats() - rideRequestDto.getRequestedSeats() < 0) throw new NoAvailableSeatsException();
-        //check if the Ride is already requested by this user , else save it
-        RideRequest rideRequest = mapper.map(rideRequestDto, RideRequest.class);
-        rideRequest.setPassenger(authenticatedUser);
-        rideRequest.setRide(ride);
-        rideRequest.setStatus(RideRequestStatus.PENDING);
-        boolean exist = ride.getRideRequests().stream().filter(rq -> rq.equals(rideRequest)).findFirst().isPresent();
-        if (exist) throw new RideAlreadyRequestedException();
-        rideRequestDao.save(rideRequest);
-        // add rideRequest to the Ride rideRequests list and save
-        ride.getRideRequests().add(rideRequest);
-        rideDao.save(ride);
-        // add rideRequest to the User rideRequest list and save
-        authenticatedUser.getMyRideRequests().add(rideRequest);
-        userDao.save(authenticatedUser);
+        // check if the Ride is already requested by this user
+        Optional<RideRequest> rideRequest = rideRequestDao.findByUserAndRide(authenticatedUser.getEmail(), rideId);
+        if (rideRequest.isPresent()) throw new RideAlreadyRequestedException();
+        // save rideRequest
+        RideRequest request = RideRequest.builder()
+                .passenger(authenticatedUser)
+                .requestedSeats(rideRequestDto.getRequestedSeats())
+                .createdAt(rideRequestDto.getCreatedAt())
+                .status(RideRequestStatus.PENDING)
+                .ride(ride)
+                .build();
+        rideRequestDao.save(request);
     }
 
     public List<RideRequestDetailDto> getRideRequestList(UserDetails userDetails){
         User authenticatedUser =  userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-        if (authenticatedUser.getMyRideRequests().isEmpty()) throw new NoRideRequestsFoundException();
-        return authenticatedUser.getMyRideRequests()
+        return rideRequestDao.findByUserEmail(authenticatedUser.getEmail())
                 .stream()
                 .map(rideRequest -> mapper.map(rideRequest, RideRequestDetailDto.class))
                 .collect(Collectors.toList());
@@ -62,15 +60,9 @@ public class PassengerService {
 
     public void cancelRideRequest(UserDetails userDetails, Long ride_id, Long rideRequestId){
         User authenticatedUser =  userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-        RideRequest rideRequest = authenticatedUser.getMyRideRequests().stream()
-                .filter(rq -> rq.getId() == rideRequestId)
-                .findFirst()
+        Ride ride = rideDao.findById(ride_id).orElseThrow(RideNotFoundException::new);
+        RideRequest rideRequest = rideRequestDao.findByUserAndRide(authenticatedUser.getEmail(),ride_id)
                 .orElseThrow(RideRequestNotFoundException::new);
-        authenticatedUser.getMyRideRequests().remove(rideRequest);
-        userDao.save(authenticatedUser);
-        Ride ride = rideDao.findById(ride_id).get();
-        ride.getRideRequests().remove(rideRequest);
-        rideDao.save(ride);
         rideRequestDao.deleteById(rideRequestId);
     }
 
