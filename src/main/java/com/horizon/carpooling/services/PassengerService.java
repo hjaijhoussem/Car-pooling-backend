@@ -59,4 +59,19 @@ public class PassengerService {
                 .map(rideRequest -> mapper.map(rideRequest, RideRequestDetailDto.class))
                 .collect(Collectors.toList());
     }
+
+    public void cancelRideRequest(UserDetails userDetails, Long ride_id, Long rideRequestId){
+        User authenticatedUser =  userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        RideRequest rideRequest = authenticatedUser.getMyRideRequests().stream()
+                .filter(rq -> rq.getId() == rideRequestId)
+                .findFirst()
+                .orElseThrow(RideRequestNotFoundException::new);
+        authenticatedUser.getMyRideRequests().remove(rideRequest);
+        userDao.save(authenticatedUser);
+        Ride ride = rideDao.findById(ride_id).get();
+        ride.getRideRequests().remove(rideRequest);
+        rideDao.save(ride);
+        rideRequestDao.deleteById(rideRequestId);
+    }
+
 }

@@ -15,6 +15,7 @@ public enum ErrorEnum {
     RIDE_NOT_FOUND("Ride not found"),
     NO_AVAILABLE_SEATS("Sorry, There is no available seats"),
     RIDE_ALREADY_REQUESTED("Looks like you've already requested this ride"),
-    NO_RIDE_REQUESTS_FOUND("You have no ride requests available.");
+    NO_RIDE_REQUESTS_FOUND("You have no ride requests available."),
+    RIDE_REQUEST_NOT_FOUND("Ride request not found");
     private final String message;
 }

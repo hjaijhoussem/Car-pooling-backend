@@ -1,6 +1,5 @@
 package com.horizon.carpooling.controllers;
 
-import com.horizon.carpooling.dto.request.RequestListDto;
 import com.horizon.carpooling.dto.request.RideRequestDetailDto;
 import com.horizon.carpooling.dto.request.RideRequestDto;
 import com.horizon.carpooling.services.PassengerService;
@@ -30,5 +29,14 @@ public class PassengerController {
     @GetMapping("/ride_requests")
     public ResponseEntity<List<RideRequestDetailDto>> getPassengerRideRequestList(@AuthenticationPrincipal UserDetails userDetails){
         return ResponseEntity.ok(passengerService.getRideRequestList(userDetails));
+    }
+
+    @DeleteMapping ("/ride_requests/{ride_id}/{ride_request_id}/cancel")
+    public ResponseEntity<String> cancelRideRequest(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("ride_id") Long rideId,
+            @PathVariable("ride_request_id") Long rideRequestId){
+        passengerService.cancelRideRequest(userDetails,rideId,rideRequestId);
+        return ResponseEntity.ok("Ride request successfully deleted");
     }
 }
