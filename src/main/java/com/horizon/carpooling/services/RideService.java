@@ -84,8 +84,6 @@ public class RideService {
         return rides.stream().map(ride -> this.mapper.map(ride,RideListDto.class)).toList();
     }
 
-
-
     public User getUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();

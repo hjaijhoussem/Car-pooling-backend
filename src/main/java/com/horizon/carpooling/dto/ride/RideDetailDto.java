@@ -21,7 +21,7 @@ public class RideDetailDto {
     private int availableSeats;
     private float pricePerSeat;
     private Date createdAt;
-    private Date updatedAt ;
+    private Date updatedAt;
     private RideStatus status;
     private Date departureDate;
     private UserListDto driver ;

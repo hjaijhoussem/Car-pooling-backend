@@ -14,6 +14,7 @@ public class RideUpdateDto {
 
     private int availableSeats;
     private float pricePerSeat;
+    @Future
     private Date departureDate;
     private Region departureRegion;
     private Region destinationRegion;
