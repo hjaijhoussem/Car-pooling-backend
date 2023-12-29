@@ -1,6 +1,7 @@
 package com.horizon.carpooling.dto.request;
 
 import com.horizon.carpooling.dto.ride.RideDetailDto;
+import com.horizon.carpooling.dto.ride.RideListDto;
 import com.horizon.carpooling.dto.user.UserDetailDto;
 import com.horizon.carpooling.entities.enums.RideRequestStatus;
 import lombok.AllArgsConstructor;
@@ -18,5 +19,5 @@ public class RideRequestDetailDto {
     private int requestedSeats;
     private Date createdAt;
     private RideRequestStatus status;
-    private RideDetailDto ride  ;
+    private RideListDto ride  ;
 }

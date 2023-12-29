@@ -51,12 +51,12 @@ public class PassengerService {
         userDao.save(authenticatedUser);
     }
 
-    public List<RequestListDto> getRideRequestList(UserDetails userDetails){
+    public List<RideRequestDetailDto> getRideRequestList(UserDetails userDetails){
         User authenticatedUser =  userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
         if (authenticatedUser.getMyRideRequests().isEmpty()) throw new NoRideRequestsFoundException();
         return authenticatedUser.getMyRideRequests()
                 .stream()
-                .map(rideRequest -> mapper.map(rideRequest, RequestListDto.class))
+                .map(rideRequest -> mapper.map(rideRequest, RideRequestDetailDto.class))
                 .collect(Collectors.toList());
     }
 }

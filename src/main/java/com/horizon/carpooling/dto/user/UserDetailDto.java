@@ -2,7 +2,9 @@ package com.horizon.carpooling.dto.user;
 
 import com.horizon.carpooling.dto.request.RideRequestDetailDto;
 import com.horizon.carpooling.dto.review.ReviewDetailDto;
+import com.horizon.carpooling.dto.review.ReviewListDto;
 import com.horizon.carpooling.dto.ride.RideDetailDto;
+import com.horizon.carpooling.dto.ride.RideListDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,9 +22,9 @@ public class UserDetailDto {
     private long CIN;
     private long phoneNumber;
     private String email;
-    private List<RideDetailDto> rides ;
-    private List<RideRequestDetailDto> myRideRequests;
-    private List<ReviewDetailDto> myReviews;
+    private List<RideListDto> rides ;
+    private List<RideListDto> myRideRequests;
+    private List<ReviewListDto> myReviews;
     private boolean isActive;
     private boolean isRider;
 }

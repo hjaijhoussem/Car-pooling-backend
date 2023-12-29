@@ -1,6 +1,7 @@
 package com.horizon.carpooling.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.horizon.carpooling.entities.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

@@ -1,6 +1,7 @@
 package com.horizon.carpooling.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,6 @@ public class Review {
     @Column(nullable = false)
     @NotBlank()
     private String comment;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "reviewer_id")

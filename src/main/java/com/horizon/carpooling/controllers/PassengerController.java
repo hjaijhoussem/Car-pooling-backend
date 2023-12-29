@@ -1,6 +1,7 @@
 package com.horizon.carpooling.controllers;
 
 import com.horizon.carpooling.dto.request.RequestListDto;
+import com.horizon.carpooling.dto.request.RideRequestDetailDto;
 import com.horizon.carpooling.dto.request.RideRequestDto;
 import com.horizon.carpooling.services.PassengerService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class PassengerController {
     }
 
     @GetMapping("/ride_requests")
-    public ResponseEntity<List<RequestListDto>> getPassengerRideRequestList(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<List<RideRequestDetailDto>> getPassengerRideRequestList(@AuthenticationPrincipal UserDetails userDetails){
         return ResponseEntity.ok(passengerService.getRideRequestList(userDetails));
     }
 }
