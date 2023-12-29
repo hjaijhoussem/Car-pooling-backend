@@ -47,4 +47,24 @@ public class GlobalHandlerException {
         return errorMap;
     }
 
+    @ExceptionHandler(value = RideNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorResponse handlerException(RideNotFoundException ex){
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(value = RideAlreadyRequestedException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody ErrorResponse handlerException(RideAlreadyRequestedException ex){
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(value = NoAvailableSeatsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handlerException(NoAvailableSeatsException ex){
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
+
+
 }
