@@ -3,19 +3,21 @@ package com.horizon.carpooling.services;
 import com.horizon.carpooling.dao.RideRepository;
 import com.horizon.carpooling.dao.RideRequestRepository;
 import com.horizon.carpooling.dao.UserRepository;
+import com.horizon.carpooling.dto.request.RequestListDto;
+import com.horizon.carpooling.dto.request.RideRequestDetailDto;
 import com.horizon.carpooling.dto.request.RideRequestDto;
 import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.RideRequest;
 import com.horizon.carpooling.entities.User;
 import com.horizon.carpooling.entities.enums.RideRequestStatus;
-import com.horizon.carpooling.exception.NoAvailableSeatsException;
-import com.horizon.carpooling.exception.RideAlreadyRequestedException;
-import com.horizon.carpooling.exception.RideNotFoundException;
-import com.horizon.carpooling.exception.UserNotFoundException;
+import com.horizon.carpooling.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +49,14 @@ public class PassengerService {
         // add rideRequest to the User rideRequest list and save
         authenticatedUser.getMyRideRequests().add(rideRequest);
         userDao.save(authenticatedUser);
+    }
+
+    public List<RequestListDto> getRideRequestList(UserDetails userDetails){
+        User authenticatedUser =  userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        if (authenticatedUser.getMyRideRequests().isEmpty()) throw new NoRideRequestsFoundException();
+        return authenticatedUser.getMyRideRequests()
+                .stream()
+                .map(rideRequest -> mapper.map(rideRequest, RequestListDto.class))
+                .collect(Collectors.toList());
     }
 }

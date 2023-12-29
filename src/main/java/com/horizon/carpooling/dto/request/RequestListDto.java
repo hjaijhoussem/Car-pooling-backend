@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestRequestListDto {
+public class RequestListDto {
 
         private Long id;
         private UserListDto passenger;
