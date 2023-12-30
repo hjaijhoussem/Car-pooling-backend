@@ -1,4 +1,4 @@
-package com.horizon.carpooling.controllers.user;
+package com.horizon.carpooling.controllers;
 
 import com.horizon.carpooling.dto.ride.RideCreateDto;
 import com.horizon.carpooling.dto.ride.RideDetailDto;

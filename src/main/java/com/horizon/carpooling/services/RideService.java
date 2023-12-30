@@ -31,7 +31,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
-public class RideService {
+public class RideService extends AbstractService{
     private final RideRepository rideDao;
     private final UserRepository userDao;
     private final ModelMapper mapper;
@@ -121,18 +121,7 @@ public class RideService {
         return rides.stream().map(ride -> this.mapper.map(ride, RideListDto.class)).toList();
     }
 
-    public User getUser(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Optional<User> user =   userDao.findByEmail(username);
-       if(user.isPresent()){
-           return user.get();
-       }
-       else {
-           throw new UserNotFoundException();
-       }
 
-    }
 
     public List<String> getRegions() {
         return List.of(Region.values()).stream().map(name -> {
