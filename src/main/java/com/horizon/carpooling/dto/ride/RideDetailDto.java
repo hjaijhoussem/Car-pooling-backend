@@ -30,5 +30,12 @@ public class RideDetailDto {
     private String departureCity;
     private String destinationCity;
 
+    public String getDepartureRegion() {
+        return departureRegion.substring(0, 1).toUpperCase() + departureRegion.substring(1).toLowerCase();
+    }
+
+    public String getDestinationRegion() {
+        return destinationRegion.substring(0, 1).toUpperCase() + destinationRegion.substring(1).toLowerCase();
+    }
 
 }

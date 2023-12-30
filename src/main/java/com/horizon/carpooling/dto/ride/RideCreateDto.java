@@ -27,11 +27,18 @@ public class RideCreateDto {
     @NotNull(message = "Departure date must not be null")
     private Date departureDate;
     @NotNull(message = "Departure region must not be null")
-    private String departureRegion;
+    private Region departureRegion;
     @NotNull(message = "Destination region must not be null")
-    private String  destinationRegion;
+    private Region  destinationRegion;
     @NotBlank(message = "Departure city must not be blank")
     private String departureCity;
     @NotBlank(message = "Destination city must not be blank")
     private String destinationCity;
+    public void setDepartureRegion(String departureRegion) {
+        this.departureRegion = Region.valueOf(departureRegion.toUpperCase());
+    }
+    public void setDestinationRegion(String destinationRegion) {
+            this.destinationRegion = Region.valueOf(destinationRegion.toUpperCase());
+    }
+
 }

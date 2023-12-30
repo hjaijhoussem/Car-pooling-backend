@@ -20,4 +20,10 @@ public class RideUpdateDto {
     private Region destinationRegion;
     private String departureCity;
     private String destinationCity;
+    public void setDestinationRegion(String destinationRegion) {
+        this.destinationRegion = Region.valueOf(destinationRegion.toUpperCase());
+    }
+    public void setDepartureRegion(String departureRegion) {
+        this.departureRegion = Region.valueOf(departureRegion.toUpperCase());
+    }
 }
