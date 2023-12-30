@@ -1,5 +1,7 @@
 package com.horizon.carpooling.services;
 
+import com.horizon.carpooling.dao.RideRepository;
+import com.horizon.carpooling.dao.RideRequestRepository;
 import com.horizon.carpooling.dao.UserRepository;
 import com.horizon.carpooling.dto.user.UserDetailDto;
 import com.horizon.carpooling.dto.user.UserUpdateRequestDto;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userDao;
+    private final RideRequestRepository rideRequestDao;
+    private final RideRepository rideDao;
     private final ModelMapper mapper;
     public UserDetailDto getUserInfo(UserDetails userDetails) {
         User authenticatedUser = userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
@@ -31,6 +35,8 @@ public class UserService {
 
     public void deleteAccount(UserDetails userDetails) {
         User authenticatedUser = userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        rideRequestDao.deleteByUserEmail(authenticatedUser.getEmail());
+        rideDao.deleteByUserEmail(authenticatedUser.getEmail());
         userDao.deleteById(authenticatedUser.getId());
     }
 }

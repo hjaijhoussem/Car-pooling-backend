@@ -4,8 +4,10 @@ import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.User;
 import com.horizon.carpooling.entities.enums.Region;
 import com.horizon.carpooling.entities.enums.RideStatus;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -34,4 +36,9 @@ public interface RideRepository  extends JpaRepository<Ride, Long> {
                                    Integer availableSeats, Float pricePerSeat,User driver, Region departureRegion, Region destinationRegion,
                                    RideStatus status,
                                    Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Ride r WHERE r.driver.email = :userEmail")
+    void deleteByUserEmail(String userEmail);
 }
