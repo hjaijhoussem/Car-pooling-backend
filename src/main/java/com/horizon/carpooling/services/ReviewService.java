@@ -37,6 +37,9 @@ public class ReviewService extends AbstractService{
         if(requests.isEmpty()){
             throw  new RuntimeException("this user didn't participate on this ride");
         }
+        if(requests.size()>1){
+            throw  new RuntimeException("you can only put one review");
+        }
         Review review =   this.mapper.map(reviewCreateDto,Review.class);
         review.setReviewer(user);
         review.setRide(ride);
