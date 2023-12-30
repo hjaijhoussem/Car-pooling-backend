@@ -4,18 +4,24 @@ import com.horizon.carpooling.dto.ride.RideCreateDto;
 import com.horizon.carpooling.dto.ride.RideDetailDto;
 import com.horizon.carpooling.dto.ride.RideListDto;
 import com.horizon.carpooling.dto.ride.RideUpdateDto;
+import com.horizon.carpooling.entities.enums.Region;
+import com.horizon.carpooling.entities.enums.RideStatus;
 import com.horizon.carpooling.services.RideService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Internal;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@CrossOrigin("http://localhost:3000")
 @RequiredArgsConstructor
 public class RideController {
     private final RideService rideService;
@@ -38,14 +44,42 @@ public class RideController {
     }
 
 
-    @GetMapping("/rides")
+   /* @GetMapping("/rides")
     public ResponseEntity<List<RideListDto>> getRides() {
         return new ResponseEntity<>(this.rideService.getRides(), HttpStatus.OK);
     }
 
-    @GetMapping("/rides/driver/{id}")
-    public ResponseEntity<List<RideListDto>> getDriverRides(@PathVariable int id) {
-        return new ResponseEntity<>(this.rideService.getDriverRides(id), HttpStatus.OK);
+    */
+
+    @GetMapping("/rides")
+    public ResponseEntity<List<RideListDto>> getRides(
+        @RequestParam(required = false) RideStatus status,
+        @RequestParam(required = false) String departureCity,
+        @RequestParam(required = false) String destinationCity,
+        @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") Date departureDate,
+        @RequestParam(required = false) Float pricePerSeat,
+        @RequestParam(required = false) Integer availableSeats
+        ,@RequestParam(required = false) Region departureRegion
+        ,@RequestParam(required = false) Region destinationRegion
+        ,@RequestParam(required = false) Integer page
+        ,@RequestParam(required = false) Integer size
+
+
+
+    ) {
+
+        return new ResponseEntity<>(this.rideService.getRides(
+            status,
+            departureCity,
+            destinationCity,
+            departureDate,
+            pricePerSeat,
+            availableSeats,
+            departureRegion,
+            destinationRegion,
+            page,
+            size
+        ), HttpStatus.OK);
     }
 
 
