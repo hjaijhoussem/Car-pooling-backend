@@ -88,8 +88,7 @@ public class RideService {
              RideStatus status ,
              String departureCity,
             String destinationCity,
-            String departureDate,
-            String departureTime,
+            Date departureDate,
             Float pricePerSeat,
              Integer availableSeats,
             Region departureRegion,
@@ -100,6 +99,10 @@ public class RideService {
     ){
         // find all rides
         // get by filter and pagination
+        if(page == null)
+            page = 0;
+        if(size == null)
+            size = 10;
         Pageable pageable = PageRequest.of(page, size);
         // get by filter
         List<Ride> rides = this.rideDao.findByFilter(

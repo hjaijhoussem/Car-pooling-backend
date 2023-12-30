@@ -10,11 +10,13 @@ import com.horizon.carpooling.services.RideService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Internal;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -54,8 +56,7 @@ public class RideController {
         @RequestParam(required = false) RideStatus status,
         @RequestParam(required = false) String departureCity,
         @RequestParam(required = false) String destinationCity,
-        @RequestParam(required = false) String departureDate,
-        @RequestParam(required = false) String departureTime,
+        @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") Date departureDate,
         @RequestParam(required = false) Float pricePerSeat,
         @RequestParam(required = false) Integer availableSeats
         ,@RequestParam(required = false) Region departureRegion
@@ -72,14 +73,12 @@ public class RideController {
             departureCity,
             destinationCity,
             departureDate,
-            departureTime,
             pricePerSeat,
             availableSeats,
             departureRegion,
             destinationRegion,
             page,
             size
-
         ), HttpStatus.OK);
     }
 

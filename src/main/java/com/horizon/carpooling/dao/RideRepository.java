@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Driver;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -28,7 +29,7 @@ public interface RideRepository  extends JpaRepository<Ride, Long> {
                     "(:status IS NULL OR r.status = :status)" +
                     "ORDER BY r.createdAt DESC"
     )
-    public List<Ride> findByFilter(String departureCity, String destinationCity, String departureDate,
+    public List<Ride> findByFilter(String departureCity, String destinationCity, Date departureDate,
                                    Integer availableSeats, Float pricePerSeat, Region departureRegion, Region destinationRegion,
                                    RideStatus status,
                                    Pageable pageable);
