@@ -27,9 +27,9 @@ public class RideCreateDto {
     @NotNull(message = "Departure date must not be null")
     private Date departureDate;
     @NotNull(message = "Departure region must not be null")
-    private Region departureRegion;
+    private String departureRegion;
     @NotNull(message = "Destination region must not be null")
-    private Region destinationRegion;
+    private String  destinationRegion;
     @NotBlank(message = "Departure city must not be blank")
     private String departureCity;
     @NotBlank(message = "Destination city must not be blank")

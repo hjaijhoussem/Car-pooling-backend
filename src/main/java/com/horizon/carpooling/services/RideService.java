@@ -36,8 +36,17 @@ public class RideService {
     private final AuthenticationService authenticationService;
 
     public RideDetailDto create(RideCreateDto rideCreateDto){
-      Ride ride =   this.mapper.map(rideCreateDto,Ride.class);
-      User driver = this.getUser();
+
+      // verify if the region is valid in the enum 'needed for achour so he can send the data as lower case'
+        rideCreateDto.setDepartureRegion(rideCreateDto.getDepartureRegion().toUpperCase());
+        rideCreateDto.setDestinationRegion(rideCreateDto.getDestinationRegion().toUpperCase());
+        if(!Region.contains(rideCreateDto.getDepartureRegion()) && !Region.contains(rideCreateDto.getDestinationRegion()))
+        {
+            throw new RuntimeException("Departure region is not valid");
+        }
+        Ride ride =   this.mapper.map(rideCreateDto,Ride.class);
+        // verify if the driver is valid
+        User driver = this.getUser();
         if(!driver.isDriver())
             throw new RuntimeException("You are not a driver");
         ride.setDriver(driver);

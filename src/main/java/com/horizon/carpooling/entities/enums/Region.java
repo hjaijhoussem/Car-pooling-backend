@@ -1,7 +1,7 @@
 package com.horizon.carpooling.entities.enums;
 
 public enum Region {
-    ARIANA,
+    ARIANA ,
     BEJA,
     BEN_AROUS,
     BIZERTE,
@@ -23,5 +23,14 @@ public enum Region {
     TATAOUINE,
     TOZEUR,
     TUNIS,
-    ZAGHOUAN
+    ZAGHOUAN;
+
+    public static boolean contains(String departureRegion) {
+        for (Region region : Region.values()) {
+            if (region.name().equals(departureRegion)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

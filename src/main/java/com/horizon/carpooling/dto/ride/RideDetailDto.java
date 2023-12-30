@@ -25,8 +25,8 @@ public class RideDetailDto {
     private RideStatus status;
     private Date departureDate;
     private UserListDto driver ;
-    private Region departureRegion;
-    private Region destinationRegion;
+    private String departureRegion;
+    private String   destinationRegion;
     private String departureCity;
     private String destinationCity;
 
