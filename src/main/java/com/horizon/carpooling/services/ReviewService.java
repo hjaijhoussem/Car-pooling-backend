@@ -5,6 +5,7 @@ import com.horizon.carpooling.dao.RideRepository;
 import com.horizon.carpooling.dao.RideRequestRepository;
 import com.horizon.carpooling.dto.review.ReviewCreateDto;
 import com.horizon.carpooling.dto.review.ReviewDetailDto;
+import com.horizon.carpooling.dto.review.ReviewListDto;
 import com.horizon.carpooling.dto.review.ReviewUpdateDto;
 import com.horizon.carpooling.entities.Review;
 import com.horizon.carpooling.entities.Ride;
@@ -59,12 +60,17 @@ public class ReviewService extends AbstractService{
 
     }
 
-    public Review getReviewDetail(){
-        return null;
+    public ReviewDetailDto getReviewDetail(Long review_id){
+       Review review = this.reviewRepository.findById(review_id).orElseThrow(RuntimeException::new);
+        return this.mapper.map(review,ReviewDetailDto.class);
     }
 
 
-    public Review getReviews(){
-        return null;
+    public List<ReviewListDto> getReviews(Long ride_id){
+        Ride ride = this.rideRepository.findById(ride_id).orElseThrow(RuntimeException::new)   ;
+        List<Review> reviews = this.reviewRepository.findByRide(ride);
+        return  reviews.stream().map(review -> {
+           return  this.mapper.map(review,ReviewListDto.class);
+        }).toList();
     }
 }

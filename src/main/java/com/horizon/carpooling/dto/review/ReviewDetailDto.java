@@ -15,4 +15,5 @@ public class ReviewDetailDto {
     private float Stars;
     private String comment;
     private RideDetailDto ride;
+    private UserListDto reviewer;
 }
