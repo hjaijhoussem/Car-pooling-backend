@@ -44,12 +44,7 @@ public class RideController {
     }
 
 
-   /* @GetMapping("/rides")
-    public ResponseEntity<List<RideListDto>> getRides() {
-        return new ResponseEntity<>(this.rideService.getRides(), HttpStatus.OK);
-    }
 
-    */
 
     @GetMapping("/rides")
     public ResponseEntity<List<RideListDto>> getRides(

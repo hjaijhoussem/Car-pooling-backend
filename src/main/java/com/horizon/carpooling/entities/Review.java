@@ -17,11 +17,9 @@ public class Review {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank()
     private float Stars;
 
-    @Column(nullable = false)
-    @NotBlank()
+    @Column(nullable = true)
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)

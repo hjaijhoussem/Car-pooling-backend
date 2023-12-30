@@ -34,7 +34,6 @@ import static java.util.stream.Collectors.toList;
 public class RideService extends AbstractService{
     private final RideRepository rideDao;
     private final UserRepository userDao;
-    private final ModelMapper mapper;
     private final AuthenticationService authenticationService;
 
     public RideDetailDto create(RideCreateDto rideCreateDto){

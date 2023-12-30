@@ -1,6 +1,7 @@
 package com.horizon.carpooling.dao;
 
 import com.horizon.carpooling.entities.Ride;
+import com.horizon.carpooling.entities.RideRequest;
 import com.horizon.carpooling.entities.User;
 import com.horizon.carpooling.entities.enums.Region;
 import com.horizon.carpooling.entities.enums.RideStatus;
@@ -34,4 +35,6 @@ public interface RideRepository  extends JpaRepository<Ride, Long> {
                                    Integer availableSeats, Float pricePerSeat,User driver, Region departureRegion, Region destinationRegion,
                                    RideStatus status,
                                    Pageable pageable);
+
+
 }
