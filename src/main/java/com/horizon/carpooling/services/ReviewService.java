@@ -5,6 +5,7 @@ import com.horizon.carpooling.dao.RideRepository;
 import com.horizon.carpooling.dao.RideRequestRepository;
 import com.horizon.carpooling.dto.review.ReviewCreateDto;
 import com.horizon.carpooling.dto.review.ReviewDetailDto;
+import com.horizon.carpooling.dto.review.ReviewUpdateDto;
 import com.horizon.carpooling.entities.Review;
 import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.RideRequest;
@@ -43,8 +44,16 @@ public class ReviewService extends AbstractService{
       return   this.mapper.map(review,ReviewDetailDto.class);
     }
 
-    public Review update(){
-            return null;
+    public ReviewDetailDto update(ReviewUpdateDto reviewUpdateDto, Long ride_id,Long review_id){
+        User user = this.getUser();
+        Review review = this.reviewRepository.findById(review_id).orElseThrow(RuntimeException::new);
+        if(review.getReviewer().getId()!=user.getId()){
+            throw new RuntimeException("only who create the the review can modify it");
+        }
+        this.mapper.map(reviewUpdateDto,review);
+        this.reviewRepository.save(review);
+        return   this.mapper.map(review,ReviewDetailDto.class);
+
     }
 
     public Review getReviewDetail(){

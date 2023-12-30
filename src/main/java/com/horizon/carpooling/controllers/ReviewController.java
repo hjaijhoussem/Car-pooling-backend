@@ -2,6 +2,7 @@ package com.horizon.carpooling.controllers;
 
 import com.horizon.carpooling.dto.review.ReviewCreateDto;
 import com.horizon.carpooling.dto.review.ReviewDetailDto;
+import com.horizon.carpooling.dto.review.ReviewUpdateDto;
 import com.horizon.carpooling.dto.ride.RideCreateDto;
 import com.horizon.carpooling.dto.ride.RideDetailDto;
 import com.horizon.carpooling.services.ReviewService;
@@ -26,6 +27,16 @@ public class ReviewController {
                                                   @PathVariable Long ride_id
                                                   ) {
         return new ResponseEntity<>(this.reviewService.create(reviewCreateDto, ride_id), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/{review_id}")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<ReviewDetailDto> update(@RequestBody @Valid ReviewUpdateDto reviewUpdateDto,
+                                                  @PathVariable Long review_id
+                                                  ,  @PathVariable Long ride_id
+    ) {
+        return new ResponseEntity<>(this.reviewService.update(reviewUpdateDto,ride_id,review_id ), HttpStatus.CREATED);
     }
 
 
