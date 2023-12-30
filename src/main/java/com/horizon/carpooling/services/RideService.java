@@ -8,13 +8,18 @@ import com.horizon.carpooling.dto.ride.RideListDto;
 import com.horizon.carpooling.dto.ride.RideUpdateDto;
 import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.User;
+import com.horizon.carpooling.entities.enums.Region;
 import com.horizon.carpooling.entities.enums.RideStatus;
 import com.horizon.carpooling.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Internal;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -78,9 +83,31 @@ public class RideService {
         }
     }
 
-    public List<RideListDto> getRides(){
+    public List<RideListDto> getRides(
+
+             RideStatus status ,
+             String departureCity,
+            String destinationCity,
+            String departureDate,
+            String departureTime,
+            Float pricePerSeat,
+             Integer availableSeats,
+            Region departureRegion,
+            Region destinationRegion,
+             Integer page ,
+             Integer size
+
+    ){
         // find all rides
-        List<Ride> rides = this.rideDao.findAll();
+        // get by filter and pagination
+        Pageable pageable = PageRequest.of(page, size);
+        // get by filter
+        List<Ride> rides = this.rideDao.findByFilter(
+                departureCity,  destinationCity,  departureDate,
+         availableSeats,  pricePerSeat,  departureRegion,  destinationRegion,
+                 status,
+                 pageable);
+
         return rides.stream().map(ride -> this.mapper.map(ride,RideListDto.class)).toList();
     }
 
@@ -96,4 +123,6 @@ public class RideService {
        }
 
     }
+
+
 }
