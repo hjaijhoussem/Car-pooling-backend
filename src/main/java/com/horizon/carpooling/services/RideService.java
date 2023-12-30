@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
+
 
 @Service
 @RequiredArgsConstructor
@@ -132,5 +134,13 @@ public class RideService {
 
     }
 
+    public List<String> getRegions() {
+        return List.of(Region.values()).stream().map(name -> {
+            String region = name.toString();
+            region = region.replace("_", " ");
+            return region.substring(0, 1).toUpperCase() + region.substring(1).toLowerCase();
+
+        }).toList();
+    }
 
 }

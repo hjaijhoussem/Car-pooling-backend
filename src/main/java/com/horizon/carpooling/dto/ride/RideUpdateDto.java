@@ -21,9 +21,11 @@ public class RideUpdateDto {
     private String departureCity;
     private String destinationCity;
     public void setDestinationRegion(String destinationRegion) {
+        destinationRegion = destinationRegion.replace(" ", "_").toUpperCase();
         this.destinationRegion = Region.valueOf(destinationRegion.toUpperCase());
     }
     public void setDepartureRegion(String departureRegion) {
+        departureRegion = departureRegion.replace(" ", "_").toUpperCase();
         this.departureRegion = Region.valueOf(departureRegion.toUpperCase());
     }
 }

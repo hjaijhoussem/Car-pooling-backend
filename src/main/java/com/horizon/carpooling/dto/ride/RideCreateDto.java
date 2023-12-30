@@ -35,9 +35,12 @@ public class RideCreateDto {
     @NotBlank(message = "Destination city must not be blank")
     private String destinationCity;
     public void setDepartureRegion(String departureRegion) {
+
+        departureRegion = departureRegion.replace(" ", "_").toUpperCase();
         this.departureRegion = Region.valueOf(departureRegion.toUpperCase());
     }
     public void setDestinationRegion(String destinationRegion) {
+        destinationRegion = destinationRegion.replace(" ", "_").toUpperCase();
             this.destinationRegion = Region.valueOf(destinationRegion.toUpperCase());
     }
 

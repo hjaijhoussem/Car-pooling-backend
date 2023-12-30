@@ -84,6 +84,11 @@ public class RideController {
         ), HttpStatus.OK);
     }
 
+    // get regions
+    @GetMapping("/rides/meta-data/regions")
+    public ResponseEntity<List<String>> getRegions() {
+        return new ResponseEntity<>(this.rideService.getRegions(), HttpStatus.OK);
+    }
 
 }
 
