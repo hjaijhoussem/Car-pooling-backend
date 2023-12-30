@@ -4,7 +4,9 @@ import com.horizon.carpooling.dto.request.RequestListDto;
 import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.RideRequest;
 import com.horizon.carpooling.entities.User;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +23,10 @@ public interface RideRequestRepository extends JpaRepository<RideRequest,Long> {
     List<RideRequest> findByUserEmail(String userEmail);
 
     List<RideRequest> findByRideAndPassenger(Ride ride, User passenger);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM RideRequest r WHERE r.passenger.email = :userEmail")
+    void deleteByUserEmail(String userEmail);
+
 }
