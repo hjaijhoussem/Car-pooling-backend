@@ -20,6 +20,7 @@ public interface RideRepository  extends JpaRepository<Ride, Long> {
     @Query(
             "SELECT r FROM Ride r WHERE " +
                     "(:departureCity IS NULL OR r.departureCity LIKE %:departureCity%) AND " +
+                    "(:driver IS NULL OR r.driver = :driver )AND " +
                     "(:destinationCity IS NULL OR r.destinationCity LIKE %:destinationCity%) AND " +
                     "(:departureDate IS NULL OR r.departureDate >= :departureDate) AND " +
                     "(:availableSeats IS NULL OR r.availableSeats >= :availableSeats) AND " +
@@ -30,7 +31,7 @@ public interface RideRepository  extends JpaRepository<Ride, Long> {
                     "ORDER BY r.createdAt DESC"
     )
     public List<Ride> findByFilter(String departureCity, String destinationCity, Date departureDate,
-                                   Integer availableSeats, Float pricePerSeat, Region departureRegion, Region destinationRegion,
+                                   Integer availableSeats, Float pricePerSeat,User driver, Region departureRegion, Region destinationRegion,
                                    RideStatus status,
                                    Pageable pageable);
 }

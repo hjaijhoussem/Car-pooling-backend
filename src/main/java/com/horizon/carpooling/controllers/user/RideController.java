@@ -54,6 +54,7 @@ public class RideController {
     @GetMapping("/rides")
     public ResponseEntity<List<RideListDto>> getRides(
         @RequestParam(required = false) RideStatus status,
+        @RequestParam(required = false) Integer driverId,
         @RequestParam(required = false) String departureCity,
         @RequestParam(required = false) String destinationCity,
         @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") Date departureDate,
@@ -70,6 +71,7 @@ public class RideController {
 
         return new ResponseEntity<>(this.rideService.getRides(
             status,
+            driverId,
             departureCity,
             destinationCity,
             departureDate,

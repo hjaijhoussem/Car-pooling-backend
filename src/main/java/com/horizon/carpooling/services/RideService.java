@@ -86,6 +86,7 @@ public class RideService {
     public List<RideListDto> getRides(
 
              RideStatus status ,
+                Integer driverId,
              String departureCity,
             String destinationCity,
             Date departureDate,
@@ -96,22 +97,25 @@ public class RideService {
              Integer page ,
              Integer size
 
-    ){
+    ) {
         // find all rides
         // get by filter and pagination
-        if(page == null)
+        User driver = null;
+        if (driverId != null) {
+            driver = this.userDao.findById(driverId).orElseThrow(UserNotFoundException::new);
+            if (!driver.isDriver())
+                throw new RuntimeException("This user is not a driver");
+        }
+        if (page == null)
             page = 0;
-        if(size == null)
+        if (size == null)
             size = 10;
         Pageable pageable = PageRequest.of(page, size);
         // get by filter
-        List<Ride> rides = this.rideDao.findByFilter(
-                departureCity,  destinationCity,  departureDate,
-         availableSeats,  pricePerSeat,  departureRegion,  destinationRegion,
-                 status,
-                 pageable);
+        List<Ride> rides = this.rideDao.findByFilter(departureCity, destinationCity, departureDate, availableSeats, pricePerSeat,
+                driver, departureRegion, destinationRegion, status, pageable);
 
-        return rides.stream().map(ride -> this.mapper.map(ride,RideListDto.class)).toList();
+        return rides.stream().map(ride -> this.mapper.map(ride, RideListDto.class)).toList();
     }
 
     public User getUser(){
