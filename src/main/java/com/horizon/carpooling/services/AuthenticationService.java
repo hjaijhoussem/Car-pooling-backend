@@ -7,13 +7,14 @@ import com.horizon.carpooling.config.JwtService;
 import com.horizon.carpooling.dao.UserRepository;
 import com.horizon.carpooling.entities.enums.Role;
 import com.horizon.carpooling.entities.User;
-import com.horizon.carpooling.exception.IncorrectPasswordException;
-import com.horizon.carpooling.exception.UserNotFoundException;
+import com.horizon.carpooling.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,12 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        boolean userExist = userRepository.findByEmail(request.getEmail()).isPresent();
+        if (userExist) throw new EmailAlreadyExistException();
+        boolean cinExist = userRepository.findByCIN(request.getCIN()).isPresent();
+        if (cinExist) throw new CinAlreadyInUseException();
+        boolean phoneExsit = userRepository.findByPhoneNumber(request.getPhoneNumber()).isPresent();
+        if (phoneExsit) throw new PhoneNumberAlreadyInUseException();
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
