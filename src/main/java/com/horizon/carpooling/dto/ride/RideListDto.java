@@ -29,11 +29,15 @@ public class RideListDto {
     private String destinationCity;
 
     public String getDepartureRegion() {
-        return departureRegion.substring(0, 1).toUpperCase() + departureRegion.substring(1).toLowerCase();
+
+        String result =  departureRegion.substring(0, 1).toUpperCase() + departureRegion.substring(1).toLowerCase();
+        return result.replace("_"," ");
+
     }
 
     public String getDestinationRegion() {
-        return destinationRegion.substring(0, 1).toUpperCase() + destinationRegion.substring(1).toLowerCase();
+        String result =  destinationRegion.substring(0, 1).toUpperCase() + destinationRegion.substring(1).toLowerCase();
+        return result.replace("_"," ");
     }
 
 

@@ -55,8 +55,8 @@ public class RideController {
         @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") Date departureDate,
         @RequestParam(required = false) Float pricePerSeat,
         @RequestParam(required = false) Integer availableSeats
-        ,@RequestParam(required = false) Region departureRegion
-        ,@RequestParam(required = false) Region destinationRegion
+        ,@RequestParam(required = false) String departureRegion
+        ,@RequestParam(required = false) String destinationRegion
         ,@RequestParam(required = false) Integer page
         ,@RequestParam(required = false) Integer size
 

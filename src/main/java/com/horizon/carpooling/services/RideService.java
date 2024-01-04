@@ -94,8 +94,8 @@ public class RideService extends AbstractService{
             Date departureDate,
             Float pricePerSeat,
              Integer availableSeats,
-            Region departureRegion,
-            Region destinationRegion,
+             String departureRegion,
+             String destinationRegion,
              Integer page ,
              Integer size
 
@@ -112,10 +112,20 @@ public class RideService extends AbstractService{
             page = 0;
         if (size == null)
             size = 10;
+
         Pageable pageable = PageRequest.of(page, size);
+        //convert region to enum
+        Region departureRegionEnum = null;
+        if (departureRegion != null) {
+            departureRegionEnum = Region.valueOf(departureRegion.toUpperCase().replace(" ", "_"));
+        }
+        Region destinationRegionEnum = null;
+        if (destinationRegion != null) {
+            destinationRegionEnum = Region.valueOf(destinationRegion.toUpperCase().replace(" ", "_"));
+        }
         // get by filter
         List<Ride> rides = this.rideDao.findByFilter(departureCity, destinationCity, departureDate, availableSeats, pricePerSeat,
-                driver, departureRegion, destinationRegion, status, pageable);
+                driver, departureRegionEnum, destinationRegionEnum, status, pageable);
 
         return rides.stream().map(ride -> this.mapper.map(ride, RideListDto.class)).toList();
     }
