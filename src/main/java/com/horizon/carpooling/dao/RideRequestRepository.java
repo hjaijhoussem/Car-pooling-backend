@@ -29,4 +29,6 @@ public interface RideRequestRepository extends JpaRepository<RideRequest,Long> {
     @Query("DELETE FROM RideRequest r WHERE r.passenger.email = :userEmail")
     void deleteByUserEmail(String userEmail);
 
+    public List<RideRequest> findByRide(Ride ride);
+
 }
