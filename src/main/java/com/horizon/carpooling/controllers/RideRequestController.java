@@ -1,6 +1,6 @@
 package com.horizon.carpooling.controllers;
 
-import com.horizon.carpooling.dto.request.RequestListDto;
+import com.horizon.carpooling.dto.request.RideRequestListDto;
 import com.horizon.carpooling.dto.request.RideRequestDetailDto;
 import com.horizon.carpooling.dto.request.RideRequestDto;
 import com.horizon.carpooling.services.RideRequestService;
@@ -42,7 +42,7 @@ public class RideRequestController {
     }
 
     @GetMapping("/api/v1/driver/{ride_id}/accept/{ride_request_id}")
-    public ResponseEntity<RequestListDto> acceptRide(
+    public ResponseEntity<RideRequestListDto> acceptRide(
                                               @PathVariable("ride_id") Long rideId,
                                                 @PathVariable("ride_request_id") Long rideRequestId
                                              ){
@@ -50,7 +50,7 @@ public class RideRequestController {
         return ResponseEntity.ok(rideRequestService.acceptRideRequest(rideId,rideRequestId));
     }
     @GetMapping("/api/v1/driver/{ride_id}/ride_requests")
-    public ResponseEntity<List<RequestListDto>> getDriverRideRequests(
+    public ResponseEntity<List<RideRequestListDto>> getDriverRideRequests(
             @PathVariable("ride_id") Long rideId
 
     ){
@@ -60,7 +60,7 @@ public class RideRequestController {
 
 
     @GetMapping("/api/v1/driver/{ride_id}/ride_requests/{ride_request_id}/reject")
-    public ResponseEntity<RequestListDto> rejectRideRequest(
+    public ResponseEntity<RideRequestListDto> rejectRideRequest(
             @PathVariable("ride_id") Long rideId,
             @PathVariable("ride_request_id") Long rideRequestId
     ){

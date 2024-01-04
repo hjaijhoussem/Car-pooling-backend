@@ -1,6 +1,5 @@
 package com.horizon.carpooling.dao;
 
-import com.horizon.carpooling.dto.request.RequestListDto;
 import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.RideRequest;
 import com.horizon.carpooling.entities.User;

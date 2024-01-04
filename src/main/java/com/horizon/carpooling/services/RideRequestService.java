@@ -3,7 +3,7 @@ package com.horizon.carpooling.services;
 import com.horizon.carpooling.dao.RideRepository;
 import com.horizon.carpooling.dao.RideRequestRepository;
 import com.horizon.carpooling.dao.UserRepository;
-import com.horizon.carpooling.dto.request.RequestListDto;
+import com.horizon.carpooling.dto.request.RideRequestListDto;
 import com.horizon.carpooling.dto.request.RideRequestDetailDto;
 import com.horizon.carpooling.dto.request.RideRequestDto;
 import com.horizon.carpooling.entities.Ride;
@@ -67,7 +67,7 @@ public class RideRequestService extends AbstractService {
     }
 
     // accept ride request
-    public RequestListDto acceptRideRequest(Long ride_id, Long rideRequestId) {
+    public RideRequestListDto acceptRideRequest(Long ride_id, Long rideRequestId) {
 
         User user = this.getUser();
         if (!user.isDriver())
@@ -89,10 +89,10 @@ public class RideRequestService extends AbstractService {
         rideRequestDao.save(rideRequest);
         ride.setAvailableSeats(ride.getAvailableSeats() - rideRequest.getRequestedSeats());
         rideDao.save(ride);
-        return mapper.map(rideRequest, RequestListDto.class);
+        return mapper.map(rideRequest, RideRequestListDto.class);
     }
 
-    public List<RequestListDto> getDriverRideRequests(Long ride_id) {
+    public List<RideRequestListDto> getDriverRideRequests(Long ride_id) {
         User user = this.getUser();
         if (!user.isDriver())
         {
@@ -104,11 +104,11 @@ public class RideRequestService extends AbstractService {
             throw new RuntimeException("You are not the driver of this ride");
         }
         List<RideRequest> rideRequests = rideRequestDao.findByRide(ride);
-        return rideRequests.stream().map(rideRequest -> mapper.map(rideRequest, RequestListDto.class)).toList();
+        return rideRequests.stream().map(rideRequest -> mapper.map(rideRequest, RideRequestListDto.class)).toList();
     }
 
     // reject ride request
-    public RequestListDto rejectRideRequest(Long ride_id, Long rideRequestId) {
+    public RideRequestListDto rejectRideRequest(Long ride_id, Long rideRequestId) {
         User user = this.getUser();
         if (!user.isDriver())
         {
@@ -124,7 +124,7 @@ public class RideRequestService extends AbstractService {
         if(rideRequest.getRide().getId() != ride.getId()) throw new RideRequestNotFoundException();
         rideRequest.setStatus(RideRequestStatus.REJECTED);
         rideRequestDao.save(rideRequest);
-        return mapper.map(rideRequest, RequestListDto.class);
+        return mapper.map(rideRequest, RideRequestListDto.class);
     }
 
 }
