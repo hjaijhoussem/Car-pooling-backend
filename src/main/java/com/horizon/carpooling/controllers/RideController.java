@@ -14,6 +14,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -46,7 +48,7 @@ public class RideController {
 
 
 
-    @GetMapping("/rides")
+    @GetMapping("/rides/all")
     public ResponseEntity<List<RideListDto>> getRides(
         @RequestParam(required = false,defaultValue = "PENDING") RideStatus status,
         @RequestParam(required = false) Integer driverId,
@@ -83,6 +85,11 @@ public class RideController {
     @GetMapping("/rides/meta-data/regions")
     public ResponseEntity<List<String>> getRegions() {
         return new ResponseEntity<>(this.rideService.getRegions(), HttpStatus.OK);
+    }
+
+    @GetMapping("/rides")
+    public ResponseEntity<List<RideListDto>> getUserRide(@AuthenticationPrincipal UserDetails userDetails){
+        return ResponseEntity.ok(this.rideService.getUserRides(userDetails));
     }
 
 }

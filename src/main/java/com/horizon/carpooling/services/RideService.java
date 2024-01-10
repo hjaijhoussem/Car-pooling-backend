@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -141,4 +142,8 @@ public class RideService extends AbstractService{
         }).toList();
     }
 
+    public List<RideListDto> getUserRides(UserDetails userDetails) {
+        User authenticatedUser =  userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        return rideDao.findByUserEmail(authenticatedUser.getEmail());
+    }
 }

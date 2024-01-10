@@ -1,5 +1,6 @@
 package com.horizon.carpooling.dao;
 
+import com.horizon.carpooling.dto.ride.RideListDto;
 import com.horizon.carpooling.entities.Ride;
 import com.horizon.carpooling.entities.RideRequest;
 import com.horizon.carpooling.entities.User;
@@ -43,4 +44,6 @@ public interface RideRepository  extends JpaRepository<Ride, Long> {
     @Query("DELETE FROM Ride r WHERE r.driver.email = :userEmail")
     void deleteByUserEmail(String userEmail);
 
+    @Query("SELECT r FROM Ride r WHERE r.driver.email = :userEmail")
+    List<RideListDto> findByUserEmail(String userEmail);
 }
