@@ -45,5 +45,5 @@ public interface RideRepository  extends JpaRepository<Ride, Long> {
     void deleteByUserEmail(String userEmail);
 
     @Query("SELECT r FROM Ride r WHERE r.driver.email = :userEmail")
-    List<RideListDto> findByUserEmail(String userEmail);
+    List<Ride> findByUserEmail(String userEmail);
 }

@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -144,6 +145,10 @@ public class RideService extends AbstractService{
 
     public List<RideListDto> getUserRides(UserDetails userDetails) {
         User authenticatedUser =  userDao.findByEmail(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-        return rideDao.findByUserEmail(authenticatedUser.getEmail());
+        List<RideListDto> rides = rideDao.findByUserEmail(authenticatedUser.getEmail())
+                .stream()
+                .map(ride -> mapper.map(ride, RideListDto.class))
+                .collect(Collectors.toList());
+        return rides;
     }
 }
