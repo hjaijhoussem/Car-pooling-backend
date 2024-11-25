@@ -67,7 +67,14 @@ pipeline {
                 }
             }
         }
-
+        stage('Deploy') {
+            environment {
+                BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
+            }
+            steps {
+                sh 'docker-compose up -d'
+            }
+        }
     }
     post {
         always {
