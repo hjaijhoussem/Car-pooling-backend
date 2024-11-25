@@ -72,7 +72,7 @@ pipeline {
                 BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
             }
             steps {
-                sh 'docker-compose up -d'
+                sh 'docker compose up -d'
             }
         }
     }
