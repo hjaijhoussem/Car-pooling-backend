@@ -72,11 +72,11 @@ pipeline {
                 BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
             }
             steps {
-                input message: 'Approve Deployment', 
+                input message: 'Approve Deployment',
                   parameters: [
                       choice(
-                          name: 'Proceed with deployment?', 
-                          choices: ['Yes', 'No'], 
+                          name: 'Proceed with deployment?',
+                          choices: ['Yes', 'No'],
                           description: 'Do you want to deploy the new image?'
                       )
                   ]
