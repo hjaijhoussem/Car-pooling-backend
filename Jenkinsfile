@@ -10,11 +10,11 @@ pipeline {
         DOCKER_IMAGE_NAME = "car-pooling-be:${BUILD_ID}"
     }
     stages{
-        stage('Checkout') {
-            steps{
-                git branch: 'main', credentialsId: 'github-jenkins', url: 'https://github.com/hjaijhoussem/Car-pooling-backend.git'
-            }
-        }
+        //stage('Checkout') {
+        //    steps{
+        //        git branch: 'main', credentialsId: 'github-jenkins', url: 'https://github.com/hjaijhoussem/Car-pooling-backend.git'
+        //    }
+        //}
 
         stage('Build Artifact'){
             steps{
