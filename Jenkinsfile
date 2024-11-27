@@ -62,8 +62,10 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh "docker tag ${DOCKER_IMAGE_NAME} localhost:6666/repository/dockerhosted-repo/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
-                    sh "docker push localhost:6666/repository/dockerhosted-repo/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+                    //sh "docker tag ${DOCKER_IMAGE_NAME} localhost:6666/repository/dockerhosted-repo/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+                    //sh "docker push localhost:6666/repository/dockerhosted-repo/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+                    sh "docker tag ${DOCKER_IMAGE_NAME} ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+                    sh "docker push ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
                 }
             }
         }
