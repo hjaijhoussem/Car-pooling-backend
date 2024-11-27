@@ -5,7 +5,7 @@ pipeline {
     }
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
-        NEXUS_URL = 'http://localhost:6666'
+        NEXUS_URL = 'localhost:6666'
         NEXUS_REPO = 'dockerhosted-repo'
         DOCKER_IMAGE_NAME = "car-pooling-be:${BUILD_ID}"
     }
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                        sh "docker login ${NEXUS_URL} -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD}"
+                        sh "docker login http://${NEXUS_URL} -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD}"
                     } 
                 }
             }
@@ -64,8 +64,8 @@ pipeline {
                 script {
                     //sh "docker tag ${DOCKER_IMAGE_NAME} localhost:6666/repository/dockerhosted-repo/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
                     //sh "docker push localhost:6666/repository/dockerhosted-repo/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
-                    sh "docker tag ${DOCKER_IMAGE_NAME} localhost:6666/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
-                    sh "docker push localhost:6666/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+                    sh "docker tag ${DOCKER_IMAGE_NAME} ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+                    sh "docker push ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
                 }
             }
         }
