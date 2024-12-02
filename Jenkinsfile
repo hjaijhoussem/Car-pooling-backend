@@ -19,7 +19,7 @@ pipeline {
 
         stage ('dev'){
             when {
-                allOF{
+                allOf{
                     changeRequest()
                     branch 'main'
                 }
