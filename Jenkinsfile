@@ -14,7 +14,10 @@ pipeline {
 
         stage('Build Artifact'){
         when {
-            branch 'main'
+            anyOf{
+                branch 'main'
+                branch 'dev'
+            }
         }
             steps{
                 sh 'mvn clean install -DskipTests'
