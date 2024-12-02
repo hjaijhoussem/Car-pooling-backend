@@ -3,9 +3,6 @@ pipeline {
     tools {
         maven '3.9.5'
     }
-    when {
-        branch 'prod'
-    }
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_URL = 'localhost:6666'
@@ -20,7 +17,14 @@ pipeline {
             }
         }
 
-
+        stage ('dev'){
+            when {
+                branch 'dev'
+            }
+            steps {
+                echo "works only for dev branch"
+            }
+        }
         stage('Quality Analysis'){
             steps{
                 withSonarQubeEnv('mysonar'){
