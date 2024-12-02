@@ -19,7 +19,10 @@ pipeline {
 
         stage ('dev'){
             when {
-                branch 'dev'
+                allOF{
+                    changeRequest()
+                    branch 'main'
+                }
             }
             steps {
                 echo "works only for dev branch"
