@@ -1,4 +1,5 @@
 pipeline {
+    // dummy change
     agent any
     tools {
         maven '3.9.5'
@@ -71,7 +72,6 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
-
             when {
                 branch 'dev'
             }
