@@ -14,7 +14,7 @@ pipeline {
 
         stage('Build Artifact'){
         when {
-            branch 'dev'
+            branch 'main'
         }
             steps{
                 sh 'mvn clean install -DskipTests'
@@ -25,16 +25,16 @@ pipeline {
             when {
                 allOf{
                     changeRequest()
-                    branch 'main'
+                    branch 'dev'
                 }
             }
             steps {
-                echo "works only for dev branch"
+                echo "works only for main branch"
             }
         }
         stage('Quality Analysis'){
             when {
-                branch 'dev'
+                branch 'main'
             }
             steps{
                 withSonarQubeEnv('mysonar'){
@@ -51,7 +51,7 @@ pipeline {
         }
         stage('Quality Gate'){
             when {
-                branch 'dev'
+                branch 'main'
             }
             steps{
                 waitForQualityGate abortPipeline: true
@@ -61,7 +61,7 @@ pipeline {
         stage('Login to Nexus') {
 
             when {
-                branch 'dev'
+                branch 'main'
             }
             steps {
                 script {
@@ -73,7 +73,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                branch 'dev'
+                branch 'main'
             }
             steps {
                 script {
@@ -84,7 +84,7 @@ pipeline {
         stage('Push Docker Image') {
 
             when {
-                branch 'dev'
+                branch 'main'
             }
             steps {
                 script {
@@ -98,7 +98,7 @@ pipeline {
                 BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
             }
             when {
-                branch 'dev'
+                branch 'main'
             }
             steps {
                 input message: 'Approve Deployment',
