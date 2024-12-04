@@ -15,6 +15,7 @@ pipeline {
         stage('Build Artifact'){
         when {
             anyOf{
+                changeRequest()
                 branch 'main'
             }
         }
