@@ -4,7 +4,12 @@ pipeline {
     tools {
         maven '3.9.5'
     }
-
+    triggers {
+            githubPullRequests(
+                triggerMode: "HEAVY_HOOKS",
+                events: [Open]
+            )
+    }
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_URL = 'localhost:6666'
