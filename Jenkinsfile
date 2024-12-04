@@ -5,14 +5,6 @@ pipeline {
         maven '3.9.5'
     }
 
-    triggers {
-            // Trigger build on PR open
-            githubPullRequest {
-                events ['opened']  // Trigger on 'opened' PR event
-                triggerMode 'HEAVY_HOOKS'  // Choose appropriate trigger mode
-            }
-        }
-
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_URL = 'localhost:6666'
