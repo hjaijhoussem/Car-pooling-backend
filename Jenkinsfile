@@ -6,12 +6,14 @@ pipeline {
     }
 
     triggers {
-            // Trigger build on PR open
-            githubPullRequest {
-                events ['opened']  // Trigger on 'opened' PR event
-                triggerMode 'HEAVY_HOOKS'  // Choose appropriate trigger mode
-            }
-        }
+        // Trigger build on PR open
+        pipelineTriggers([
+            githubPullRequest(
+                events: ['opened'],  // Trigger on 'opened' PR event
+                triggerMode: 'HEAVY_HOOKS'  // Choose appropriate trigger mode
+            )
+        ])
+    }
 
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
