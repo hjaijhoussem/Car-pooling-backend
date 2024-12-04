@@ -17,6 +17,7 @@ pipeline {
         when {
             anyOf{
                 branch 'main'
+                triggeredBy 'GitHubPullRequest'
             }
         }
             steps{
@@ -27,12 +28,11 @@ pipeline {
         stage ('dev'){
             when {
                 allOf{
-                    triggeredBy 'GitHubPullRequest'
                     branch 'dev'
                 }
             }
             steps {
-                echo "works only for main branch"
+                echo "works only for dev branch"
             }
         }
         stage('Quality Analysis'){
