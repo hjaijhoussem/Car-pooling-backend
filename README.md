@@ -3,7 +3,9 @@
 This document provides an overview of the Jenkins pipeline configuration used for building, testing, and deploying the **Car Pooling Backend** application. The pipeline automates the **Continuous Integration (CI)** and **Continuous Delivery (CD)** processes.
 ## Table of Contents
 1. [Overview](#overview)
-2. [Continuous Integration (CI)](#continuous-integration-ci)
+2. [Build Triggers](#build-triggers)
+   1. [Multi-branch pipeline Webhook](#multi-branch-pipeline-webhook)
+3. [Continuous Integration (CI)](#continuous-integration-ci)
    1. [Checkout](#1-checkout)
    2. [Build Artifact](#2-build-artifact)
    3. [Quality Analysis](#3-quality-analysis)
@@ -11,7 +13,7 @@ This document provides an overview of the Jenkins pipeline configuration used fo
    5. [Login to Nexus](#5-login-to-nexus)
    6. [Build Docker Image](#6-build-docker-image)
    7. [Push Docker Image](#7-push-docker-image)
-3. [Continuous Delivery (CD)](#continuous-delivery-cd)
+4. [Continuous Delivery (CD)](#continuous-delivery-cd)
     1. [.env file](#1-env-file)
     2. [Docker compose file](#2-docker-compose-file)
     3. [Deploy stage](#3-deploy-stage)
@@ -36,6 +38,55 @@ Project Structure:
 
 ---
 
+## Build Triggers
+### Multi-branch pipeline Webhook
+#### Pre-requisites:
+1. **Jenkins Multibranch Scan Webhook Trigger Plugin**
+   - **Documentation**: [Multibranch Scan Webhook Trigger Plugin](https://plugins.jenkins.io/multibranch-scan-webhook-trigger/)
+   - To install the plugin:
+      - Add `multibranch-scan-webhook-trigger` to your `plugins.txt`.
+      - Alternatively, you can install it via the Jenkins UI:  
+        Go to `Manage Jenkins` → `Manage Plugins` → `Available`, then search for `Multibranch Scan Webhook Trigger` and install it.
+
+2. **GitHub Access Token (Classic)**
+   - You need a GitHub Access Token with appropriate permissions to authenticate Jenkins with GitHub.
+
+3. **Jenkins Credentials**
+   - Create a **secret text** credential in Jenkins with the GitHub Access Token as the value.
+
+#### Setup Instructions:
+1. **Add GitHub Webhook**
+
+   In your GitHub repository:
+
+   - Go to **Settings** → **Webhooks** → **Add Webhook**.
+   - Set the following values:
+      - **Payload URL**:  
+        `http://<JENKINS-DNS>/multibranch-webhook-trigger/invoke?token=<YOUR-TOKEN>`
+      - **Content Type**: `application/json`
+      - **SSL Verification**: Check `Enable SSL verification` if your Jenkins server uses TLS (optional).
+      - **Which events would you like to trigger this webhook?**:  
+        Select `Let me select individual events` and choose the relevant `Build` triggers for your use case.
+   - Click **Add Webhook** to save the settings.
+
+
+2. **Configure GitHub Server API in Jenkins**
+
+   - Go to **Manage Jenkins** → **Configure System** → Scroll down to the **GitHub Servers** section.
+   - Click **Add GitHub Server** and configure:
+      - **Name**: Choose any name for your server (e.g., `GitHub-Server`).
+      - **API URL**: Use the default value `https://api.github.com`.
+      - **Credentials**: Select the **secret text** credential that contains your GitHub access token or create a new one.
+   - Click **Test connection**. You should see a message:  
+           `Credentials verified for user <YOUR_GITHUB_USERNAME>, rate limit: 4999`.
+
+
+3. **Configure The Multi-Branch Pipeline in Jenkins**
+
+   - In the **Multi-branch Pipeline** job configuration, scroll to the **Scan Pipeline Multibranches Triggers** section.
+   - Check the option **Scan by webhook**.
+   - In the **Trigger Token** field, enter the GitHub access token you configured earlier.
+---
 ## Continuous Integration (CI)
 
 The **Continuous Integration (CI)** part of the pipeline automates the build, testing, quality analysis process, building and pushing the docker image to nexus.
@@ -50,6 +101,8 @@ stage('Checkout') {
     }
 }
 ```
+**Note**:
+If you are using a Jenkinsfile stored within your Git repository, this checkout stage will be automatically handled by Jenkins. You don’t need to manually define it in your pipeline.
 ### 2. **Build Artifact**
 The `mvn clean install -DskipTests` command is executed to build the project, skipping the unit tests in this stage to speed up the build.
 ```groovy
