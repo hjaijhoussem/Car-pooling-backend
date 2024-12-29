@@ -18,6 +18,18 @@ pipeline {
             }
         }
 
+        stage('Print') {
+            when{
+                anyOf {
+                    branch 'dev'
+                    changeRequest target: 'dev'
+                }
+            }
+            steps{
+                echo 'test trigger on PR on dev branch'
+            }
+        }
+
         stage('Build Artifact'){
         when {
             anyOf{
