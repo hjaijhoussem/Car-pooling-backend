@@ -1,9 +1,9 @@
 pipeline {
     // testing webhook again
     agent any
-    tools {
-        maven '3.9.5'
-    }
+    //tools {
+    //    maven '3.9.5'
+    //}
 
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
