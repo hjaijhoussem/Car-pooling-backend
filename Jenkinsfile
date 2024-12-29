@@ -12,11 +12,17 @@ pipeline {
         DOCKER_IMAGE_NAME = "car-pooling-be:${BUILD_ID}"
     }
     stages{
+        stage('Test build artifact'{
+            steps{
+                checkout scm    
+            }
+        }
 
         stage('Build Artifact'){
         when {
             anyOf{
-                branch 'main'
+                // main
+                branch 'release'
                 triggeredBy 'GitHubPullRequest'
             }
         }
@@ -28,7 +34,8 @@ pipeline {
         stage ('dev'){
             when {
                 allOf{
-                    branch 'dev'
+                    // dev
+                    branch 'release'
                 }
             }
             steps {
@@ -37,7 +44,8 @@ pipeline {
         }
         stage('Quality Analysis'){
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps{
                 withSonarQubeEnv('mysonar'){
@@ -54,7 +62,8 @@ pipeline {
         }
         stage('Quality Gate'){
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps{
                 waitForQualityGate abortPipeline: true
@@ -64,7 +73,8 @@ pipeline {
         stage('Login to Nexus') {
 
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps {
                 script {
@@ -76,7 +86,8 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps {
                 script {
@@ -87,7 +98,8 @@ pipeline {
         stage('Push Docker Image') {
 
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps {
                 script {
@@ -101,7 +113,8 @@ pipeline {
                 BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
             }
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps {
                 input message: 'Approve Deployment',
