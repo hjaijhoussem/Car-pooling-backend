@@ -1,15 +1,10 @@
 pipeline {
     // testing webhook again
     agent any
-    tools {
-        maven '3.9.5'
-    }
-    triggers {
-            githubPullRequests(
-                triggerMode: "HEAVY_HOOKS",
-                events: [Open]
-            )
-    }
+    //tools {
+    //    maven '3.9.5'
+    //}
+
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_URL = 'localhost:6666'
@@ -17,11 +12,29 @@ pipeline {
         DOCKER_IMAGE_NAME = "car-pooling-be:${BUILD_ID}"
     }
     stages{
+        stage('Test build artifact'{
+            steps{
+                checkout scm    
+            }
+        }
+
+        stage('Print') {
+            when{
+                anyOf {
+                    branch 'dev'
+                    changeRequest target: 'dev'
+                }
+            }
+            steps{
+                echo 'test trigger on PR on dev branch'
+            }
+        }
 
         stage('Build Artifact'){
         when {
             anyOf{
-                branch 'main'
+                // main
+                branch 'release'
                 triggeredBy 'GitHubPullRequest'
             }
         }
@@ -33,7 +46,8 @@ pipeline {
         stage ('dev'){
             when {
                 allOf{
-                    branch 'dev'
+                    // dev
+                    branch 'release'
                 }
             }
             steps {
@@ -42,7 +56,8 @@ pipeline {
         }
         stage('Quality Analysis'){
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps{
                 withSonarQubeEnv('mysonar'){
@@ -59,7 +74,8 @@ pipeline {
         }
         stage('Quality Gate'){
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps{
                 waitForQualityGate abortPipeline: true
@@ -69,7 +85,8 @@ pipeline {
         stage('Login to Nexus') {
 
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps {
                 script {
@@ -81,7 +98,8 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps {
                 script {
@@ -92,7 +110,8 @@ pipeline {
         stage('Push Docker Image') {
 
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps {
                 script {
@@ -106,7 +125,8 @@ pipeline {
                 BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
             }
             when {
-                branch 'main'
+                // main
+                branch 'release'
             }
             steps {
                 input message: 'Approve Deployment',
