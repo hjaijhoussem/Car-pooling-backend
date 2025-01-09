@@ -8,10 +8,13 @@ pipeline {
     }
 
     environment {
-        NEXUS_CREDENTIAL_ID = "nexus"
-        NEXUS_URL = 'localhost:6666'
-        NEXUS_REPO = 'dockerhosted-repo'
+        // NEXUS_CREDENTIAL_ID = "nexus"
+        // NEXUS_URL = 'localhost:6666'
+        // NEXUS_REPO = 'dockerhosted-repo'
         DOCKER_IMAGE_NAME = "car-pooling-be:${BUILD_ID}"
+        REGISTRY_URL = 'ghcr.io'
+        REGISTRY_REPO = 'hjaijhoussem'
+
     }
     stages{
         
@@ -67,10 +70,17 @@ pipeline {
             //     branch 'main'
             // }
 
+            // steps {
+            //     script {
+            //         withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+            //             sh "docker login http://${NEXUS_URL} -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD}"
+            //         } 
+            //     }
+            // }
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                        sh "docker login http://${NEXUS_URL} -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD}"
+                    withCredentials([usernamePassword(credentialsId: 'perso-gh-registry', usernameVariable: 'GH_USERNAME', passwordVariable: 'GH_PASSWORD')]) {
+                        sh "docker login http://${REGISTRY_URL} -u ${GH_USERNAME} -p ${GH_PASSWORD}"
                     } 
                 }
             }
@@ -93,10 +103,16 @@ pipeline {
             //     branch 'main'
             // }
 
+            // steps {
+            //     script {
+            //         sh "docker tag ${DOCKER_IMAGE_NAME} ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+            //         sh "docker push ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+            //     }
+            // }
             steps {
                 script {
-                    sh "docker tag ${DOCKER_IMAGE_NAME} ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
-                    sh "docker push ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
+                    sh "docker tag ${DOCKER_IMAGE_NAME} ${REGISTRY_URL}/${REGISTRY_REPO}/${DOCKER_IMAGE_NAME}"
+                    sh "docker push ${REGISTRY_URL}/${REGISTRY_REPO}/${DOCKER_IMAGE_NAME}"
                 }
             }
         }
