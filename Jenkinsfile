@@ -5,6 +5,7 @@ pipeline {
 
     tools {
         maven '3.9.5'
+        docker 'docker'
     }
 
     environment {
