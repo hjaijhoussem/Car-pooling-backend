@@ -80,7 +80,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'perso-gh-registry', usernameVariable: 'GH_USERNAME', passwordVariable: 'GH_PASSWORD')]) {
-                        sh "docker login http://${REGISTRY_URL} -u ${GH_USERNAME} -p ${GH_PASSWORD}"
+                        sh "docker login ${REGISTRY_URL} -u ${GH_USERNAME} -p ${GH_PASSWORD}"
                     } 
                 }
             }
