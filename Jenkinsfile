@@ -14,24 +14,7 @@ pipeline {
         DOCKER_IMAGE_NAME = "car-pooling-be:${BUILD_ID}"
     }
     stages{
-        stage('Test build artifact'){
-            steps{
-                checkout scm    
-            }
-        }
-
-        stage('Print') {
-            when{
-                anyOf {
-                    branch 'dev'
-                    changeRequest target: 'dev'
-                }
-            }
-            steps{
-                echo 'test trigger on PR on dev branch'
-            }
-        }
-
+        
 
         stage('Checkout'){
             steps{
