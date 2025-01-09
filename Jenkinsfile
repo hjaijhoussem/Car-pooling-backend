@@ -121,7 +121,7 @@ pipeline {
             }
         }
 
-        tage('Login to GitHub Packages') {
+        stage('Login to GitHub Packages') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'perso-gh-registry', usernameVariable: 'GH_USERNAME', passwordVariable: 'GH_PASSWORD')]) {
