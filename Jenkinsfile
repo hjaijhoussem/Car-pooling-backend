@@ -16,7 +16,7 @@ pipeline {
         REGISTRY_URL = 'ghcr.io'
         REGISTRY_REPO = 'hjaijhoussem'
 
-        JAR_FILE = 'target/car-pooling-be.jar'
+        JAR_FILE = 'target/*.jar'
         GITHUB_PKG_URL = "https://maven.pkg.github.com/hjaijhoussem/Car-pooling-backend"
 
     }
