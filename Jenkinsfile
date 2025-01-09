@@ -2,9 +2,11 @@ pipeline {
     // testing webhook again
     // load balancer -> Teamboost server + REDIS
     agent any
+
     tools {
         maven '3.9.5'
     }
+
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
         NEXUS_URL = 'localhost:6666'
@@ -12,6 +14,24 @@ pipeline {
         DOCKER_IMAGE_NAME = "car-pooling-be:${BUILD_ID}"
     }
     stages{
+        stage('Test build artifact'){
+            steps{
+                checkout scm    
+            }
+        }
+
+        stage('Print') {
+            when{
+                anyOf {
+                    branch 'dev'
+                    changeRequest target: 'dev'
+                }
+            }
+            steps{
+                echo 'test trigger on PR on dev branch'
+            }
+        }
+
 
         stage('Checkout'){
             steps{
@@ -63,6 +83,7 @@ pipeline {
             // when {
             //     branch 'main'
             // }
+
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
@@ -72,9 +93,11 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
+
             // when {
             //     branch 'main'
             // }
+
             steps {
                 script {
                     sh "docker build -t ${DOCKER_IMAGE_NAME} ."
@@ -86,6 +109,7 @@ pipeline {
             // when {
             //     branch 'main'
             // }
+
             steps {
                 script {
                     sh "docker tag ${DOCKER_IMAGE_NAME} ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
@@ -100,6 +124,7 @@ pipeline {
             // when {
             //     branch 'main'
             // }
+
             steps {
                 input message: 'Approve Deployment',
                   parameters: [
