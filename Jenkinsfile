@@ -1,9 +1,11 @@
 pipeline {
     // testing webhook again
+    // load balancer -> Teamboost server + REDIS
     agent any
-    //tools {
-    //    maven '3.9.5'
-    //}
+
+    tools {
+        maven '3.9.5'
+    }
 
     environment {
         NEXUS_CREDENTIAL_ID = "nexus"
@@ -12,82 +14,59 @@ pipeline {
         DOCKER_IMAGE_NAME = "car-pooling-be:${BUILD_ID}"
     }
     stages{
-        stage('Test build artifact'{
-            steps{
-                checkout scm    
-            }
-        }
+        
 
-        stage('Print') {
-            when{
-                anyOf {
-                    branch 'dev'
-                    changeRequest target: 'dev'
-                }
-            }
+        stage('Checkout'){
             steps{
-                echo 'test trigger on PR on dev branch'
+                checkout scmGit(branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'pipe-gh-token', url: 'git@github.com:hjaijhoussem/Car-pooling-backend.git']])
             }
         }
 
         stage('Build Artifact'){
-        when {
-            anyOf{
-                // main
-                branch 'release'
-                triggeredBy 'GitHubPullRequest'
-            }
-        }
+        // when {
+        //     anyOf{
+        //         branch 'main'
+        //         expression { return params.current_status == "opened" && params.merged == false && params.branch == "main"}
+        //         //triggeredBy 'GitHubPullRequest'
+        //     }
+        // }
             steps{
                 sh 'mvn clean install -DskipTests'
             }
         }
 
-        stage ('dev'){
-            when {
-                allOf{
-                    // dev
-                    branch 'release'
-                }
-            }
-            steps {
-                echo "works only for dev branch"
-            }
-        }
-        stage('Quality Analysis'){
-            when {
-                // main
-                branch 'release'
-            }
-            steps{
-                withSonarQubeEnv('mysonar'){
-                   sh """
-                    mvn sonar:sonar \
-                        -Dsonar.projectKey=car-pooling \
-                        -Dsonar.projectName=car-pooling \
-                        -Dsonar.sources=src/main/java \
-                        -Dsonar.java.binaries=target/classes
-                    """
-                }
+        // stage('Quality Analysis'){
+        //     when {
+        //         branch 'main'
+        //     }
+        //     steps{
+        //         withSonarQubeEnv('mysonar'){
+        //            sh """
+        //             mvn sonar:sonar \
+        //                 -Dsonar.projectKey=car-pooling \
+        //                 -Dsonar.projectName=car-pooling \
+        //                 -Dsonar.sources=src/main/java \
+        //                 -Dsonar.java.binaries=target/classes
+        //             """
+        //         }
 
-            }
-        }
-        stage('Quality Gate'){
-            when {
-                // main
-                branch 'release'
-            }
-            steps{
-                waitForQualityGate abortPipeline: true
-            }
-        }
+        //     }
+        // }
+        // stage('Quality Gate'){
+        //     // when {
+        //     //     branch 'main'
+        //     // }
+        //     steps{
+        //         waitForQualityGate abortPipeline: true
+        //     }
+        // }
 
         stage('Login to Nexus') {
 
-            when {
-                // main
-                branch 'release'
-            }
+            // when {
+            //     branch 'main'
+            // }
+
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
@@ -97,10 +76,11 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
-            when {
-                // main
-                branch 'release'
-            }
+
+            // when {
+            //     branch 'main'
+            // }
+
             steps {
                 script {
                     sh "docker build -t ${DOCKER_IMAGE_NAME} ."
@@ -109,10 +89,10 @@ pipeline {
         }
         stage('Push Docker Image') {
 
-            when {
-                // main
-                branch 'release'
-            }
+            // when {
+            //     branch 'main'
+            // }
+
             steps {
                 script {
                     sh "docker tag ${DOCKER_IMAGE_NAME} ${NEXUS_URL}/repository/${NEXUS_REPO}/${DOCKER_IMAGE_NAME}"
@@ -124,10 +104,10 @@ pipeline {
             environment {
                 BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
             }
-            when {
-                // main
-                branch 'release'
-            }
+            // when {
+            //     branch 'main'
+            // }
+
             steps {
                 input message: 'Approve Deployment',
                   parameters: [
