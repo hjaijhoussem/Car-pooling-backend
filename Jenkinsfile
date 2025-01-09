@@ -16,6 +16,9 @@ pipeline {
         REGISTRY_URL = 'ghcr.io'
         REGISTRY_REPO = 'hjaijhoussem'
 
+        JAR_FILE = 'target/car-pooling-be.jar'
+        GITHUB_PKG_URL = "https://maven.pkg.github.com/hjaijhoussem/Car-pooling-backend"
+
     }
     stages{
         
@@ -117,30 +120,65 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            environment {
-                BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
-            }
-            // when {
-            //     branch 'main'
-            // }
 
+        tage('Login to GitHub Packages') {
             steps {
-                input message: 'Approve Deployment',
-                  parameters: [
-                      choice(
-                          name: 'Proceed with deployment?',
-                          choices: ['Yes', 'No'],
-                          description: 'Do you want to deploy the new image?'
-                      )
-                  ]
-                sh 'docker compose up -d'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'perso-gh-registry', usernameVariable: 'GH_USERNAME', passwordVariable: 'GH_PASSWORD')]) {
+                        // Create settings.xml for Maven
+                        writeFile file: 'settings.xml', text: """
+                            <settings>
+                                <servers>
+                                    <server>
+                                        <id>github</id>
+                                        <username>${GH_USERNAME}</username>
+                                        <password>${GH_PASSWORD}</password>
+                                    </server>
+                                </servers>
+                            </settings>
+                        """
+                    }
+                }
             }
         }
-    }
-    post {
-        always {
-            cleanWs()
+
+        stage('Publish JAR') {
+            steps {
+                script {
+                    sh """
+                        mvn deploy:deploy-file \
+                        -DgroupId=com.example \
+                        -DartifactId=car-pooling-be \
+                        -Dversion=${BUILD_ID} \
+                        -Dpackaging=jar \
+                        -Dfile=${JAR_FILE} \
+                        -DrepositoryId=github \
+                        -Durl=${GITHUB_PKG_URL} \
+                        -s settings.xml
+                    """
+                }
+            }
         }
+        // stage('Deploy') {
+        //     environment {
+        //         BACKEND_IMAGE = "${DOCKER_IMAGE_NAME}"
+        //     }
+        //     // when {
+        //     //     branch 'main'
+        //     // }
+
+        //     steps {
+        //         input message: 'Approve Deployment',
+        //           parameters: [
+        //               choice(
+        //                   name: 'Proceed with deployment?',
+        //                   choices: ['Yes', 'No'],
+        //                   description: 'Do you want to deploy the new image?'
+        //               )
+        //           ]
+        //         sh 'docker compose up -d'
+        //     }
+        // }
     }
+
 }
